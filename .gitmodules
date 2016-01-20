@@ -1,0 +1,6 @@
+[submodule "external/smhasher"]
+	path = external/smhasher
+	url = https://github.com/aappleby/smhasher/
+[submodule "external/utfcpp"]
+	path = external/utfcpp
+	url = https://github.com/nemtrif/utfcpp

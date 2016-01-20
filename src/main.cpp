@@ -16,17 +16,6 @@
 #include <iostream>
 
 #include "pretty_print.h"
-#include "lf/TLocalPtr.h"
-#include "lf/AtomicPtr.h"
-#include "lf/MarkableAtomicPtr.h"
-
-#include "lf/AtomicStack.h"
-#include "lf/HPList.h"
-
-#include "lf/Post.h"
-#include "lf/Barrier.h"
-
-#include "lf/HPSystem.h"
 #include "hashing.h"
 #include "texty/SimHasher.h"
 #include "texty/ConstantSpaceSimHasher.h"
@@ -39,8 +28,6 @@
 using texty::SimHasher;
 
 using namespace std;
-using namespace scivey::lf;
-using scivey::lf::AtomicStack;
 
 struct Thing {
   string name;

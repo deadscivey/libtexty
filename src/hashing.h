@@ -11,17 +11,6 @@ namespace hashing {
   std::pair<uint64_t, uint64_t> city_hash_128(const char *ptr, size_t textLen, std::pair<uint64_t, uint64_t> seed);
   std::pair<uint64_t, uint64_t> city_hash_128(const std::string&);
   std::pair<uint64_t, uint64_t> city_hash_128(const std::string&, std::pair<uint64_t, uint64_t> seed);
-  // std::pair<uint64_t, uint64_t> city_hash_crc_128(const char *ptr, size_t textLen);
-  // std::pair<uint64_t, uint64_t> city_hash_crc_128(const char *ptr, size_t textLen, std::pair<uint64_t, uint64_t> seed);
-  // std::pair<uint64_t, uint64_t> city_hash_crc_128(const std::string&);
-  // std::pair<uint64_t, uint64_t> city_hash_crc_128(const std::string&, std::pair<uint64_t, uint64_t> seed);
-
-  // std::tuple<uint64_t, uint64_t, uint64_t, uint64_t>
-  //   city_hash_crc_256(const char *, size_t textLen);
-
-  // std::tuple<uint64_t, uint64_t, uint64_t, uint64_t>
-  //   city_hash_crc_256(const std::string&);
-
   uint64_t city_128_to_64(std::pair<uint64_t, uint64_t>);
   uint64_t city_128_to_64(uint64_t, uint64_t);
 

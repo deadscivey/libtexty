@@ -61,12 +61,8 @@ class ConstantSpaceSimHasher {
       oss << " ";
       oss << text.substr(part2.first, part2.second - part2.first);
       std::string currentShingle = oss.str();
-      // LOG(INFO) << currentShingle << "\t[" << currentShingle.size() << "]";
       if (bloom.insertIfMissing(currentShingle)) {
         addToHash(hashAccumulator, currentShingle);
-      } else {
-        // LOG(INFO) << "skipped";
-        ;
       }
       ++shingleIt;
     }

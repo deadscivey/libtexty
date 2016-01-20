@@ -35,37 +35,6 @@ namespace hashing {
   pair<uint64_t, uint64_t> city_hash_128(const std::string &text, pair<uint64_t, uint64_t> seed) {
     return city_hash_128(text.data(), text.size(), seed);
   }
-
-  // pair<uint64_t, uint64_t> city_hash_crc_128(const char *ptr, size_t textLen) {
-  //   return CityHashCrc128(ptr, textLen);
-  // }
-
-  // pair<uint64_t, uint64_t> city_hash_crc_128(const char *ptr, size_t textLen, pair<uint64_t, uint64_t> seed) {
-  //   return CityHashCrc128WithSeed(ptr, textLen, seed);
-  // }
-
-  // pair<uint64_t, uint64_t> city_hash_crc_128(const std::string &text) {
-  //   return city_hash_crc_128(text.data(), text.size());
-  // }
-
-  // pair<uint64_t, uint64_t> city_hash_crc_128(const std::string &text, pair<uint64_t, uint64_t> seed) {
-  //   return city_hash_crc_128(text.data(), text.size(), seed);
-  // }
-
-  // std::tuple<uint64_t, uint64_t, uint64_t, uint64_t>
-  //   city_hash_crc_256(const char *ptr, size_t textLen) {
-  //     array<uint64_t, 4> output;
-  //     CityHashCrc256(ptr, textLen, output.data());
-  //     return std::make_tuple(
-  //       output[0], output[1], output[2], output[3]
-  //     );
-  //   }
-
-  // std::tuple<uint64_t, uint64_t, uint64_t, uint64_t>
-  //   city_hash_crc_256(const std::string &text) {
-  //     return city_hash_crc_256(text.data(), text.size());
-  //   }
-
   uint64_t city_128_to_64(pair<uint64_t, uint64_t> value) {
     return Hash128to64(value);
   }
