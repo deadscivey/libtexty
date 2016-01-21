@@ -1,4 +1,7 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include <vector>
 #include "hashing/ConstantSpaceSimHasher.h"
 #include "hashing/hash_funcs.h"
 
@@ -6,11 +9,21 @@ using namespace std;
 
 namespace texty { namespace python_interface {
 
-uint64_t simhashText(const std::string &text, uint64_t seed) {
+uint64_t simhash(const std::string &text, uint64_t seed) {
   hashing::ConstantSpaceSimHasher<1024, 10> hasher([](const std::string &arg, uint64_t sd) {
     return hashing::city_hash_64(arg, sd);
   }, seed);
   return hasher.hash(text);
+}
+
+std::vector<uint64_t> rotate_bits(uint64_t value, size_t rotateBy, size_t rotations) {
+  std::vector<uint64_t> result;
+  result.reserve(1 + rotations);
+  for (size_t i = 0; i < rotations; i++) {
+    size_t offset = rotateBy * i;
+    result.push_back((value << offset) | (value >> offset));
+  }
+  return result;
 }
 
 }} // texty::python_interface
@@ -20,9 +33,10 @@ uint64_t simhashText(const std::string &text, uint64_t seed) {
 namespace py = pybind11;
 
 PYBIND11_PLUGIN(textypy) {
-    py::module m("textypy", "pybind11 example plugin");
+    py::module m("textypy", "libtexty python interface");
 
-    m.def("simhashText", &texty::python_interface::simhashText, "A function which adds two numbers");
+    m.def("simhash", &texty::python_interface::simhash, "Compute simhash score of 2-shingles for given text");
+    m.def("rotate_bits", &texty::python_interface::rotate_bits, "Get a vector of rotations of a uint64_t");
 
     return m.ptr();
 }

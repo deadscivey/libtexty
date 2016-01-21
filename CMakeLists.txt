@@ -12,6 +12,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src
     ${CMAKE_CURRENT_SOURCE_DIR}/external/utfcpp/source
     ${CMAKE_CURRENT_SOURCE_DIR}/external/libstemmer/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/pybind11/include
 )
 
 link_directories(
@@ -59,11 +60,7 @@ add_library(libstemmer
     ${LIBSTEMMER_SOURCES}
 )
 
-# set(LIBSTEMMER ${PROJECT_SOURCE_DIR}/external/libstemmer/libstemmer.o)
-
-
 set(LIBS
-    # ${LIBSTEMMER}
     libstemmer
     folly
     mitie
