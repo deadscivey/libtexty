@@ -90,17 +90,3 @@ set(RUNNER_SOURCES
 add_executable(runner ${RUNNER_SOURCES})
 
 target_link_libraries(runner ${LIBS})
-
-set(TEXTYPY_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/python_interface.cpp
-    ${BASE_SOURCES}
-)
-
-add_library(textypy SHARED
-    ${TEXTYPY_SOURCES}
-)
-
-target_link_libraries(textypy
-    ${LIBS}
-)
-

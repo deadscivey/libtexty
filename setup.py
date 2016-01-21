@@ -18,6 +18,10 @@ textypy = Extension('textypy',
         'external/utfcpp/source',
         'external/pybind11/include'
     ],
+    headers=[
+        'external/smhasher/src/City.h',
+        'external/smhasher/src/MurmurHash3.h',
+    ],
     library_dirs=[
         '/usr/local/lib'
     ],
@@ -26,7 +30,12 @@ textypy = Extension('textypy',
     ]
 )
 
-setup (name = 'textypy',
-       version = '0.1',
-       description = 'python interface for libtexty',
-       ext_modules = [textypy])
+setup(
+    name = 'textypy',
+    version = '0.1.2',
+    description = 'python interface for libtexty',
+    maintainer = 'Scott Ivey',
+    maintainer_email='scott.ivey@gmail.com',
+    url='https://github.com/scivey/libtexty',
+    ext_modules = [textypy]
+)

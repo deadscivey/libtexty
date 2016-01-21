@@ -4,6 +4,7 @@
 #include <vector>
 #include "hashing/ConstantSpaceSimHasher.h"
 #include "hashing/hash_funcs.h"
+#include "util/misc.h"
 
 using namespace std;
 
@@ -26,6 +27,10 @@ std::vector<uint64_t> rotate_bits(uint64_t value, size_t rotateBy, size_t rotati
   return result;
 }
 
+uint64_t hamming_distance(uint64_t x, uint64_t y) {
+  return util::hammingDistance(x, y);
+}
+
 }} // texty::python_interface
 
 
@@ -36,7 +41,8 @@ PYBIND11_PLUGIN(textypy) {
     py::module m("textypy", "libtexty python interface");
 
     m.def("simhash", &texty::python_interface::simhash, "Compute simhash score of 2-shingles for given text");
-    m.def("rotate_bits", &texty::python_interface::rotate_bits, "Get a vector of rotations of a uint64_t");
+    m.def("rotate_bits", &texty::python_interface::rotate_bits, "Get a vector of rotations of a 64-bit value");
+    m.def("hamming_distance", &texty::python_interface::hamming_distance, "Get hamming distance of two 64-bit values");
 
     return m.ptr();
 }
