@@ -4,3 +4,6 @@
 [submodule "external/utfcpp"]
 	path = external/utfcpp
 	url = https://github.com/nemtrif/utfcpp
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest
