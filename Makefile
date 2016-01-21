@@ -10,3 +10,6 @@ deps:
 
 clean-deps:
 	cd external/libstemmer && make clean
+
+upload-python:
+	python setup.py sdist upload -r pypi
