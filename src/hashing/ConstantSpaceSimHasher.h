@@ -49,6 +49,7 @@ class ConstantSpaceSimHasher {
     string_views::ShingleView2 shingleView(text);
     auto shingleIt = shingleView.begin();
     auto endShingle = shingleView.end();
+    size_t prevPart1 = 9999;
     while (shingleIt.good()) {
       if (shingleIt == endShingle) {
         break;
@@ -56,6 +57,10 @@ class ConstantSpaceSimHasher {
       std::ostringstream oss;
       auto shingle = *shingleIt;
       auto part1 = std::get<0>(shingle);
+      if (prevPart1 == part1.first) {
+        break;
+      }
+      prevPart1 = part1.first;
       auto part2 = std::get<1>(shingle);
       oss << text.substr(part1.first, part1.second - part1.first);
       oss << " ";

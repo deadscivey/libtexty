@@ -2,6 +2,7 @@
 #include "string_views/TokenView.h"
 #include "util/misc.h"
 #include <string>
+#include <glog/logging.h>
 
 using namespace std;
 
@@ -62,6 +63,7 @@ TokenView::Iterator& TokenView::Iterator::operator++() {
   while (nextEnd.good()) {
     auto current = *nextEnd;
     if (current.second > 255) {
+      ++nextEnd;
       continue;
     }
     uint8_t c = (uint8_t) current.second;

@@ -62,7 +62,7 @@ struct AtomHaving {
 
 std::map<string, string> loadData() {
   std::vector<string> fnames;
-  for (size_t i = 1; i < 5; i++) {
+  for (size_t i = 1; i < 6; i++) {
     ostringstream oss;
     oss << "text/doc" << i << ".txt";
     fnames.push_back(oss.str());

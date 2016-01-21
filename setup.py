@@ -32,7 +32,7 @@ textypy = Extension('textypy',
 
 setup(
     name = 'textypy',
-    version = '0.1.2',
+    version = '0.1.3',
     description = 'python interface for libtexty',
     maintainer = 'Scott Ivey',
     maintainer_email='scott.ivey@gmail.com',
