@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <vector>
 #include <set>
+#include <map>
 
 namespace texty { namespace util {
 
@@ -27,5 +28,25 @@ size_t hammingDistance(T t1, T t2) {
   }
   return acc;
 }
+
+template<typename T1, typename T2>
+std::set<T1> keySet(const std::map<T1, T2> &aMap) {
+  std::set<T1> result;
+  for (auto &item: aMap) {
+    result.insert(item.first);
+  }
+  return result;
+}
+
+template<typename T1, typename T2>
+std::vector<T1> keyVec(const std::map<T1, T2> &aMap) {
+  std::vector<T1> result;
+  result.reserve(aMap.size());
+  for (auto &item: aMap) {
+    result.push_back(item.first);
+  }
+  return result;
+}
+
 
 }} // texty::util

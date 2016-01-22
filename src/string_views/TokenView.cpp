@@ -1,6 +1,7 @@
 #include "string_views/Utf8View.h"
 #include "string_views/TokenView.h"
 #include "util/misc.h"
+#include "unicode/support.h"
 #include <string>
 #include <glog/logging.h>
 
@@ -10,7 +11,7 @@ namespace texty { namespace string_views {
 
 TokenView::TokenView(const string &text): text_(text), utf8View_(text){}
 
-TokenView::Iterator::Iterator(Utf8View::Iterator start, Utf8View::Iterator end)
+TokenView::Iterator::Iterator(Utf8Iterator start, Utf8Iterator end)
   : start_(start), end_(end) {}
 
 bool TokenView::Iterator::operator==(const Iterator &other) const {
@@ -37,42 +38,40 @@ std::pair<size_t, size_t> TokenView::Iterator::operator*() {
 }
 
 TokenView::Iterator& TokenView::Iterator::operator++() {
-  Utf8View::Iterator nextStart = end_;
+  Utf8Iterator nextStart = end_;
   if (!nextStart) {
+    start_ = end_;
     return *this;
   }
   while (nextStart.good()) {
     auto current = *nextStart;
-    if (current.second > 255) {
-      break;
-    }
-    uint8_t cc = (uint8_t) current.second;
-    char c = cc;
-    if (c == ' ' || util::isAsciiPunctuation(c)) {
+    if (!unicode::isLetterPoint(current.second)) {
       ++nextStart;
       continue;
     }
     break;
   }
   start_ = nextStart;
-  Utf8View::Iterator nextEnd = start_;
+  Utf8Iterator nextEnd = start_;
   if (!nextEnd.good()) {
     end_ = nextEnd;
     return *this;
   }
+  size_t prevIdx = 999;
   while (nextEnd.good()) {
     auto current = *nextEnd;
-    if (current.second > 255) {
+    if (current.first == prevIdx) {
+      break;
+    }
+    prevIdx = current.first;
+    if (unicode::isLetterPoint(current.second)) {
       ++nextEnd;
       continue;
     }
-    uint8_t c = (uint8_t) current.second;
-    if (c == ' ' || util::isAsciiPunctuation(c)) {
-      break;
-    }
-    ++nextEnd;
+    break;
   }
   end_ = nextEnd;
+
   return *this;
 }
 
@@ -83,16 +82,12 @@ TokenView::Iterator TokenView::Iterator::operator++(int) {
 }
 
 TokenView::Iterator TokenView::begin() {
-  Utf8View::Iterator startIter = utf8View_.begin();
-  Utf8View::Iterator firstEnd = startIter;
+  Utf8Iterator startIter = utf8View_.begin();
+  Utf8Iterator firstEnd = startIter;
   while (firstEnd.good()) {
     auto current = *firstEnd;
-    if (current.second < 255) {
-      uint8_t cc = (uint8_t) current.second;
-      char c = cc;
-      if (c == ' ' || util::isAsciiPunctuation(c)) {
-        break;
-      }
+    if (!unicode::isLetterPoint(current.second)) {
+      break;
     }
     ++firstEnd;
   }

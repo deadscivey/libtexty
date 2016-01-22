@@ -40,7 +40,6 @@ class SimHasher {
       hashAccumulator[i] = 0;
     }
     for (auto &item: valueCollection) {
-      // LOG(INFO) << item << "\t[" << item.size() << "]";
       addToHash(hashAccumulator, item);
     }
     std::bitset<N> hashBits;

@@ -13,6 +13,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/external/utfcpp/source
     ${CMAKE_CURRENT_SOURCE_DIR}/external/libstemmer/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external/pybind11/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/googletest/googletest/include
 )
 
 link_directories(
@@ -73,20 +74,40 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Language.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hashing/hash_funcs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/misc.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/UnicodeBlock.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/support.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/BaseStemmer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/Utf8Stemmer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8Iterator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessNGramView.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessUtf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/TokenView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/ShingleView2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )
 
-set(RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+add_library(texty
     ${BASE_SOURCES}
 )
+target_link_libraries(texty ${LIBS})
 
-add_executable(runner ${RUNNER_SOURCES})
+add_executable(runner
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+)
+target_link_libraries(runner texty ${LIBS})
 
-target_link_libraries(runner ${LIBS})
+set(GTEST_LIB
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/googletest/googletest/src/gtest-all.o
+)
+
+add_executable(unit_test_runner
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_Utf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_TokenView.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_ShingleView2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_RandomAccessUtf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp
+)
+
+target_link_libraries(unit_test_runner texty ${GTEST_LIB} ${LIBS})

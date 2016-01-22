@@ -1,5 +1,7 @@
 #pragma once
 #include "string_views/Utf8View.h"
+#include "string_views/Utf8Iterator.h"
+
 #include <string>
 
 namespace texty { namespace string_views {
@@ -11,10 +13,10 @@ class TokenView {
   TokenView(const std::string &text);
   class Iterator {
    protected:
-    Utf8View::Iterator start_;
-    Utf8View::Iterator end_;
+    Utf8Iterator start_;
+    Utf8Iterator end_;
    public:
-    Iterator(Utf8View::Iterator start, Utf8View::Iterator end);
+    Iterator(Utf8Iterator start, Utf8Iterator end);
     bool operator==(const Iterator &other) const;
     bool operator!=(const Iterator &other) const;
     bool good();

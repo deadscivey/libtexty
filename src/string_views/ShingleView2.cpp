@@ -10,10 +10,14 @@ ShingleView2::Iterator::Iterator(TokenView::Iterator first, TokenView::Iterator 
   : first_(first), second_(second){}
 
 ShingleView2::Iterator& ShingleView2::Iterator::operator++() {
-  first_ = second_;
   if (!second_.good()) {
+    if (first_.good()) {
+      ++second_;
+      first_ = second_;
+    }
     return *this;
   }
+  first_ = second_;
   ++second_;
   return *this;
 }
@@ -44,8 +48,9 @@ bool ShingleView2::Iterator::operator==(const Iterator &other) const {
 }
 
 bool ShingleView2::Iterator::operator!=(const Iterator &other) const {
-  return first_ != other.first_;
+  return first_ != other.first_ && second_ != other.second_;
 }
+
 ShingleView2::Iterator& ShingleView2::Iterator::operator=(const Iterator &other) {
   first_ = other.first_;
   second_ = other.second_;

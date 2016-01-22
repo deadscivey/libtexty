@@ -19,6 +19,10 @@
 #include "hashing/hash_funcs.h"
 #include "hashing/SimHasher.h"
 #include "hashing/ConstantSpaceSimHasher.h"
+#include "string_views/RandomAccessNGramView.h"
+#include "string_views/RandomAccessUtf8View.h"
+#include "string_views/NGramSampler.h"
+#include "randomness/RandomDistribution.h"
 
 #include "hashing/BloomFilter.h"
 
@@ -76,26 +80,46 @@ std::map<string, string> loadData() {
   return data;
 }
 
+using texty::string_views::NGramSampler;
+using texty::randomness::RandomDistribution;
+
 int main() {
   auto docs = loadData();
-  // std::random_device rd;
-  auto seeded = 17;
-  texty::hashing::ConstantSpaceSimHasher<1024, 30> hasher(
-    [](const string &text, uint64_t seed) { return texty::hashing::city_hash_64(text, seed); },
-    seeded
-  );
-  std::map<string, uint64_t> constantHashed;
-  for (auto &item: docs) {
-    constantHashed[item.first] = hasher.hash(item.second);
+  auto keys = texty::util::keyVec(docs);
+  auto data = docs[keys[0]];
+  LOG(INFO) << data;
+  auto sampler = NGramSampler<RandomDistribution<uniform_int_distribution, size_t>>::create(data);
+  for (size_t i = 0; i < 10; i++) {
+    prettyLog(sampler.get<1>());
   }
-  for (auto &item: constantHashed) {
-    for (auto &other: constantHashed) {
-      if (item.first == other.first) {
-        continue;
-      }
-      auto dist = texty::util::hammingDistance(item.second, other.second);
-      LOG(INFO) << item.first << " vs " << other.first << " -> " << dist;
-    }
+  for (size_t i = 0; i < 10; i++) {
+    prettyLog(sampler.get<2>());
   }
-
+  for (size_t i = 0; i < 10; i++) {
+    prettyLog(sampler.get<3>());
+  }
 }
+
+// int main() {
+//   auto docs = loadData();
+//   // std::random_device rd;
+//   auto seeded = 17;
+//   texty::hashing::ConstantSpaceSimHasher<1024, 30> hasher(
+//     [](const string &text, uint64_t seed) { return texty::hashing::city_hash_64(text, seed); },
+//     seeded
+//   );
+//   std::map<string, uint64_t> constantHashed;
+//   for (auto &item: docs) {
+//     constantHashed[item.first] = hasher.hash(item.second);
+//   }
+//   for (auto &item: constantHashed) {
+//     for (auto &other: constantHashed) {
+//       if (item.first == other.first) {
+//         continue;
+//       }
+//       auto dist = texty::util::hammingDistance(item.second, other.second);
+//       LOG(INFO) << item.first << " vs " << other.first << " -> " << dist;
+//     }
+//   }
+
+// }
