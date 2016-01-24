@@ -48,5 +48,15 @@ std::vector<T1> keyVec(const std::map<T1, T2> &aMap) {
   return result;
 }
 
+template<
+  typename T,
+  typename TIgnore = typename std::enable_if<std::is_enum<T>::value>::type
+>
+size_t hashEnum(T enumVal) {
+  using underlying = typename std::underlying_type<T>::type;
+  return std::hash<underlying>()(
+    static_cast<underlying>(enumVal)
+  );
+}
 
 }} // texty::util

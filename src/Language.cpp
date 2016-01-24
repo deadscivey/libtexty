@@ -1,5 +1,8 @@
 #include "Language.h"
 #include <string>
+#include <unordered_map>
+
+using namespace std;
 
 namespace texty {
 
@@ -65,6 +68,8 @@ std::string stringOfLanguage(Language lang) {
   }
 }
 
+
+
 std::string englishNameOfLanguage(Language lang) {
   switch (lang) {
     case Language::AR : return "Arabic";
@@ -77,5 +82,74 @@ std::string englishNameOfLanguage(Language lang) {
     default           : return "UNKNOWN";
   }
 }
+
+static const unordered_map<string, Language> codeToLanguageMap {
+  {"af", Language::AF},
+  {"ar", Language::AR},
+  {"bg", Language::BG},
+  {"bn", Language::BN},
+  {"ca", Language::CA},
+  {"cs", Language::CS},
+  {"cy", Language::CY},
+  {"da", Language::DA},
+  {"de", Language::DE},
+  {"el", Language::EL},
+  {"en", Language::EN},
+  {"es", Language::ES},
+  {"et", Language::ET},
+  {"fa", Language::FA},
+  {"fi", Language::FI},
+  {"fr", Language::FR},
+  {"gu", Language::GU},
+  {"he", Language::HE},
+  {"hi", Language::HI},
+  {"hr", Language::HR},
+  {"hu", Language::HU},
+  {"id", Language::ID},
+  {"it", Language::IT},
+  {"ja", Language::JA},
+  {"kn", Language::KN},
+  {"ko", Language::KO},
+  {"lt", Language::LT},
+  {"lv", Language::LV},
+  {"mk", Language::MK},
+  {"ml", Language::ML},
+  {"mr", Language::MR},
+  {"ne", Language::NE},
+  {"nl", Language::NL},
+  {"no", Language::NO},
+  {"pa", Language::PA},
+  {"pl", Language::PL},
+  {"pt", Language::PT},
+  {"ro", Language::RO},
+  {"ru", Language::RU},
+  {"sk", Language::SK},
+  {"sl", Language::SL},
+  {"so", Language::SO},
+  {"sq", Language::SQ},
+  {"sv", Language::SV},
+  {"sw", Language::SW},
+  {"ta", Language::TA},
+  {"te", Language::TE},
+  {"th", Language::TH},
+  {"tl", Language::TL},
+  {"tr", Language::TR},
+  {"uk", Language::UK},
+  {"unknown", Language::UNKNOWN},
+  {"ur", Language::UR},
+  {"vi", Language::VI},
+  {"zh_cn", Language::ZH_CN},
+  {"zh_tw", Language::ZH_TW}
+};
+
+
+Language languageFromCode(const std::string &code) {
+  auto found = codeToLanguageMap.find(code);
+  if (found == codeToLanguageMap.end()) {
+    return Language::UNKNOWN;
+  }
+  return found->second;
+}
+
 
 } // texty

@@ -66,6 +66,7 @@ set(LIBS
     folly
     mitie
     glog
+    double-conversion
     atomic
     pthread
 )
@@ -84,6 +85,7 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessUtf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/TokenView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/ShingleView2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/LanguageProfile.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )

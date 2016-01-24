@@ -22,6 +22,7 @@
 #include "string_views/RandomAccessNGramView.h"
 #include "string_views/RandomAccessUtf8View.h"
 #include "string_views/NGramSampler.h"
+#include "language_detection/LanguageProfile.h"
 #include "randomness/RandomDistribution.h"
 
 #include "hashing/BloomFilter.h"
@@ -32,37 +33,6 @@ using texty::hashing::SimHasher;
 
 using namespace std;
 
-struct Thing {
-  string name;
-  Thing(string name): name(name){}
-  Thing() {
-    LOG(INFO) << "construct (" << name << ")";
-  }
-  ~Thing() {
-    LOG(INFO) << "destruct (" << name << ")";
-  }
-};
-
-struct IntBox {
-  int x;
-  IntBox(int x): x(x){}
-};
-
-using texty::util::pretty_print::prettyLog;
-
-struct AtomHaving {
-  uint16_t x;
-  std::atomic<uintptr_t> something {0};
-  bool compare_exchange_strong(uintptr_t expect, uintptr_t next) {
-    return something.compare_exchange_strong(expect, next);
-  }
-  void store(uintptr_t x) {
-    something.store(x);
-  }
-  uintptr_t load() {
-    return something.load();
-  }
-};
 
 std::map<string, string> loadData() {
   std::vector<string> fnames;
@@ -82,44 +52,26 @@ std::map<string, string> loadData() {
 
 using texty::string_views::NGramSampler;
 using texty::randomness::RandomDistribution;
-
+using texty::language_detection::LanguageProfile;
 int main() {
-  auto docs = loadData();
-  auto keys = texty::util::keyVec(docs);
-  auto data = docs[keys[0]];
-  LOG(INFO) << data;
-  auto sampler = NGramSampler<RandomDistribution<uniform_int_distribution, size_t>>::create(data);
-  for (size_t i = 0; i < 10; i++) {
-    prettyLog(sampler.get<1>());
-  }
-  for (size_t i = 0; i < 10; i++) {
-    prettyLog(sampler.get<2>());
-  }
-  for (size_t i = 0; i < 10; i++) {
-    prettyLog(sampler.get<3>());
-  }
+  google::InstallFailureSignalHandler();
+  string fname = "data/language_profiles.json";
+  auto profs = LanguageProfile::loadFromFile(fname);
 }
 
 // int main() {
 //   auto docs = loadData();
-//   // std::random_device rd;
-//   auto seeded = 17;
-//   texty::hashing::ConstantSpaceSimHasher<1024, 30> hasher(
-//     [](const string &text, uint64_t seed) { return texty::hashing::city_hash_64(text, seed); },
-//     seeded
-//   );
-//   std::map<string, uint64_t> constantHashed;
-//   for (auto &item: docs) {
-//     constantHashed[item.first] = hasher.hash(item.second);
+//   auto keys = texty::util::keyVec(docs);
+//   auto data = docs[keys[0]];
+//   LOG(INFO) << data;
+//   auto sampler = NGramSampler<RandomDistribution<uniform_int_distribution, size_t>>::create(data);
+//   for (size_t i = 0; i < 10; i++) {
+//     prettyLog(sampler.get<1>());
 //   }
-//   for (auto &item: constantHashed) {
-//     for (auto &other: constantHashed) {
-//       if (item.first == other.first) {
-//         continue;
-//       }
-//       auto dist = texty::util::hammingDistance(item.second, other.second);
-//       LOG(INFO) << item.first << " vs " << other.first << " -> " << dist;
-//     }
+//   for (size_t i = 0; i < 10; i++) {
+//     prettyLog(sampler.get<2>());
 //   }
-
+//   for (size_t i = 0; i < 10; i++) {
+//     prettyLog(sampler.get<3>());
+//   }
 // }

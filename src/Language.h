@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "util/misc.h"
 
 namespace texty {
 
@@ -66,4 +67,16 @@ std::string stringOfLanguage(Language lang);
 
 std::string englishNameOfLanguage(Language lang);
 
+Language languageFromCode(const std::string&);
+
 } // texty
+
+
+namespace std {
+  template<>
+  struct hash<texty::Language> {
+    size_t operator()(const texty::Language &val) const {
+      return texty::util::hashEnum<texty::Language>(val);
+    }
+  };
+}

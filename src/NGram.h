@@ -1,8 +1,10 @@
 #pragma once
 #include <tuple>
 #include <array>
+#include <glog/logging.h>
 #include "hashing/hash_funcs.h"
 #include "util/pretty_print_predef.h"
+#include "util/macros.h"
 
 namespace texty {
 
@@ -14,6 +16,14 @@ struct NGram {
   NGram() {
     for (size_t i = 0; i < NGramSize; i++) {
       codepoints[i] = 0;
+    }
+  }
+  NGram(std::initializer_list<value_type> init) {
+    DEBUG_CHECK(init.size() == NGramSize);
+    size_t idx = 0;
+    for (auto item: init) {
+      codepoints[idx] = item;
+      idx++;
     }
   }
   bool operator==(const NGram &other) const {
@@ -46,7 +56,7 @@ template<typename T, size_t NGramSize>
 struct hash<texty::NGram<T, NGramSize>> {
   using arg_type=texty::NGram<T, NGramSize>;
   static const size_t N = NGramSize;
-  size_t operator()(const arg_type &arg) {
+  size_t operator()(const arg_type &arg) const {
     size_t seed = std::hash<T>()(arg.codepoints[0]);
     for (size_t i = 1; i < N; i++) {
       seed = texty::hashing::hashCombine(seed, std::hash<T>()(arg.codepoints[i]));
