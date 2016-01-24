@@ -22,7 +22,7 @@
 #include "string_views/RandomAccessNGramView.h"
 #include "string_views/RandomAccessUtf8View.h"
 #include "string_views/NGramSampler.h"
-#include "language_detection/LanguageProfile.h"
+#include "language_detection/LanguageProfiles.h"
 #include "randomness/RandomDistribution.h"
 
 #include "hashing/BloomFilter.h"
@@ -52,11 +52,11 @@ std::map<string, string> loadData() {
 
 using texty::string_views::NGramSampler;
 using texty::randomness::RandomDistribution;
-using texty::language_detection::LanguageProfile;
+using texty::language_detection::LanguageProfiles;
 int main() {
   google::InstallFailureSignalHandler();
   string fname = "data/language_profiles.json";
-  auto profs = LanguageProfile::loadFromFile(fname);
+  auto profs = LanguageProfiles::loadFromFile(fname);
 }
 
 // int main() {

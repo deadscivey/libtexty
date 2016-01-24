@@ -8,7 +8,7 @@
 
 namespace texty { namespace language_detection {
 
-class LanguageProfile {
+class LanguageProfiles {
  public:
   using lang_map = std::unordered_map<Language, double>;
   using one_gram_map = std::unordered_map<NGram<uint32_t, 1>, lang_map>;
@@ -20,19 +20,19 @@ class LanguageProfile {
   three_gram_map threeGrams_;
   lang_map emptyScores_;
  public:
-  LanguageProfile(one_gram_map, two_gram_map, three_gram_map);
-  LanguageProfile();
-  LanguageProfile(LanguageProfile &&other);
-  LanguageProfile(const LanguageProfile &other);
-  LanguageProfile& operator=(LanguageProfile &&other);
-  LanguageProfile& operator=(const LanguageProfile &other);
+  LanguageProfiles(one_gram_map, two_gram_map, three_gram_map);
+  LanguageProfiles();
+  LanguageProfiles(LanguageProfiles &&other);
+  LanguageProfiles(const LanguageProfiles &other);
+  LanguageProfiles& operator=(LanguageProfiles &&other);
+  LanguageProfiles& operator=(const LanguageProfiles &other);
 
   const lang_map& getScores(NGram<uint32_t, 1> ngram);
   const lang_map& getScores(NGram<uint32_t, 2> ngram);
   const lang_map& getScores(NGram<uint32_t, 3> ngram);
-
-  static LanguageProfile loadFromJsonString(const std::string&);
-  static LanguageProfile loadFromFile(const std::string&);
+  const lang_map& getEmptyScores();
+  static LanguageProfiles loadFromJsonString(const std::string&);
+  static LanguageProfiles loadFromFile(const std::string&);
 };
 
 }} // texty::language_detection

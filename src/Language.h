@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+
 #include "util/misc.h"
 
 namespace texty {
@@ -68,6 +70,8 @@ std::string stringOfLanguage(Language lang);
 std::string englishNameOfLanguage(Language lang);
 
 Language languageFromCode(const std::string&);
+
+const std::vector<Language>& getAllLanguages();
 
 } // texty
 

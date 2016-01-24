@@ -1,6 +1,8 @@
 #include "Language.h"
 #include <string>
 #include <unordered_map>
+#include <vector>
+
 
 using namespace std;
 
@@ -151,5 +153,67 @@ Language languageFromCode(const std::string &code) {
   return found->second;
 }
 
+static const vector<Language> allLanguages {
+  Language::AF,
+  Language::AR,
+  Language::BG,
+  Language::BN,
+  Language::CA,
+  Language::CS,
+  Language::CY,
+  Language::DA,
+  Language::DE,
+  Language::EL,
+  Language::EN,
+  Language::ES,
+  Language::ET,
+  Language::FA,
+  Language::FI,
+  Language::FR,
+  Language::GU,
+  Language::HE,
+  Language::HI,
+  Language::HR,
+  Language::HU,
+  Language::ID,
+  Language::IT,
+  Language::JA,
+  Language::KN,
+  Language::KO,
+  Language::LT,
+  Language::LV,
+  Language::MK,
+  Language::ML,
+  Language::MR,
+  Language::NE,
+  Language::NL,
+  Language::NO,
+  Language::PA,
+  Language::PL,
+  Language::PT,
+  Language::RO,
+  Language::RU,
+  Language::SK,
+  Language::SL,
+  Language::SO,
+  Language::SQ,
+  Language::SV,
+  Language::SW,
+  Language::TA,
+  Language::TE,
+  Language::TH,
+  Language::TL,
+  Language::TR,
+  Language::UK,
+  Language::UNKNOWN,
+  Language::UR,
+  Language::VI,
+  Language::ZH_CN,
+  Language::ZH_TW
+};
+
+const vector<Language>& getAllLanguages() {
+  return allLanguages;
+}
 
 } // texty

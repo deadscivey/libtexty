@@ -1,4 +1,6 @@
+#pragma once
 #include <random>
+#include "randomness/RandomEngine.h"
 
 namespace texty { namespace randomness {
 
@@ -9,15 +11,12 @@ class RandomDistribution {
   using value_type = TElem;
  protected:
   distribution_type dist_;
-  std::mt19937 engine_;
+  RandomEngine<std::mt19937> engine_;
  public:
   RandomDistribution(value_type minVal, value_type maxVal, size_t seed)
     : dist_(minVal, maxVal), engine_(seed){}
   RandomDistribution(value_type minVal, value_type maxVal)
-    : dist_(minVal, maxVal) {
-    std::random_device rd;
-    engine_.seed(rd());
-  }
+    : dist_(minVal, maxVal) {}
   static RandomDistribution createMaxInterval(size_t seed) {
     TElem nothing = 0;
     TElem everything = ~nothing;
@@ -29,7 +28,7 @@ class RandomDistribution {
     return RandomDistribution(nothing, everything);
   }
   value_type get() {
-    return dist_(engine_);
+    return dist_(engine_.get());
   }
   value_type getConstrained(value_type minV, value_type maxV) {
     auto interval = maxV - minV;
