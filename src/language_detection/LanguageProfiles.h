@@ -31,7 +31,10 @@ class LanguageProfiles {
   const lang_map& getScores(NGram<uint32_t, 2> ngram);
   const lang_map& getScores(NGram<uint32_t, 3> ngram);
   const lang_map& getEmptyScores();
-  static LanguageProfiles loadFromJsonString(const std::string&);
+
+  static void initFromJson(LanguageProfiles *target, const std::string&);
+  static void initFromFile(LanguageProfiles *target, const std::string&);
+  static LanguageProfiles loadFromJson(const std::string&);
   static LanguageProfiles loadFromFile(const std::string&);
 };
 

@@ -17,7 +17,7 @@ const double CONV_THRESHOLD = 0.99999;
 const size_t BASE_FREQ = 10000;
 const size_t ITERATION_LIMIT = 1000;
 
-DetectionRunner::DetectionRunner(LanguageProfiles &profiles,
+DetectionRunner::DetectionRunner(LanguageProfiles *profiles,
     sampler_type &ngramSampler)
   : profiles_(profiles), ngramSampler_(ngramSampler) {}
 
@@ -64,16 +64,16 @@ const LanguageProfiles::lang_map& DetectionRunner::getRandomNGramScores() {
   auto ngLen = ngramLengthDist_.get();
   if (ngLen == 1) {
     auto sample = ngramSampler_.get<1>();
-    return profiles_.getScores(sample);
+    return profiles_->getScores(sample);
   } else if (ngLen == 2) {
     auto sample = ngramSampler_.get<2>();
-    return profiles_.getScores(sample);
+    return profiles_->getScores(sample);
   } else if (ngLen == 3) {
     auto sample = ngramSampler_.get<3>();
-    return profiles_.getScores(sample);
+    return profiles_->getScores(sample);
   }
   DEBUG_CHECK(false);
-  return profiles_.getEmptyScores();
+  return profiles_->getEmptyScores();
 }
 
 

@@ -89,8 +89,11 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/TokenView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/ShingleView2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/LanguageProfiles.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/GlobalLanguageProfiles.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/DetectionRunner.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/LanguageDetector.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/OwningLanguageDetector.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/GlobalLanguageDetector.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/NonOwningLanguageDetector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )

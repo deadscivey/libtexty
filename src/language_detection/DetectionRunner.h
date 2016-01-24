@@ -17,7 +17,7 @@ class DetectionRunner {
   using sampler_type = string_views::NGramSampler<
       randomness::RandomDistribution<std::uniform_int_distribution, size_t>>;
  protected:
-  LanguageProfiles &profiles_;
+  LanguageProfiles *profiles_;
   sampler_type &ngramSampler_;
   std::map<Language, double> langScores_;
   randomness::RandomDistribution<std::uniform_int_distribution, size_t>
@@ -33,7 +33,7 @@ class DetectionRunner {
   void run();
  public:
   DetectionRunner(
-    LanguageProfiles &profiles,
+    LanguageProfiles *profiles,
     sampler_type &ngramSampler
   );
   Language detect();

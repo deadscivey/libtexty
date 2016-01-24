@@ -4,7 +4,7 @@
 #include <glog/logging.h>
 #include <folly/FileUtil.h>
 #include "language_detection/LanguageProfiles.h"
-#include "language_detection/LanguageDetector.h"
+#include "language_detection/OwningLanguageDetector.h"
 #include "Language_pprint.h"
 #include "util/pretty_print.h"
 #include "util/fs.h"
@@ -12,14 +12,14 @@
 
 using namespace std;
 using texty::language_detection::LanguageProfiles;
-using texty::language_detection::LanguageDetector;
+using texty::language_detection::OwningLanguageDetector;
 using texty::Language;
 using texty::util::pretty_print::prettyPrint;
 using texty::util::fs::readFileSync;
 
 TEST(TestLanguageDetection, TestWorkiness) {
   auto profiles = LanguageProfiles::loadFromFile("data/language_profiles.json");
-  LanguageDetector detector(profiles);
+  OwningLanguageDetector detector(profiles);
   const size_t seed = 7;
   vector<pair<string, Language>> files {
     {"ar_from_wikipedia.txt", Language::AR},

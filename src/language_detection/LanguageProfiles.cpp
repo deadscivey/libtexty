@@ -74,8 +74,7 @@ const LanguageProfiles::lang_map& LanguageProfiles::getEmptyScores() {
   return emptyScores_;
 }
 
-LanguageProfiles LanguageProfiles::loadFromJsonString(const std::string& jsonData) {
-  LanguageProfiles result;
+void LanguageProfiles::initFromJson(LanguageProfiles *target, const std::string &jsonData) {
   auto data = json::parse(jsonData);
   for (auto gramPair: data[0]) {
     uint32_t x = gramPair[0][0];
@@ -87,7 +86,7 @@ LanguageProfiles LanguageProfiles::loadFromJsonString(const std::string& jsonDat
       double score = langPair[1];
       langScores.insert(std::make_pair(lang, score));
     }
-    result.oneGrams_.insert(std::make_pair(
+    target->oneGrams_.insert(std::make_pair(
       key, langScores
     ));
   }
@@ -103,7 +102,7 @@ LanguageProfiles LanguageProfiles::loadFromJsonString(const std::string& jsonDat
       double score = langPair[1];
       langScores.insert(std::make_pair(lang, score));
     }
-    result.twoGrams_.insert(std::make_pair(
+    target->twoGrams_.insert(std::make_pair(
       key, langScores
     ));
   }
@@ -120,17 +119,28 @@ LanguageProfiles LanguageProfiles::loadFromJsonString(const std::string& jsonDat
       double score = langPair[1];
       langScores.insert(std::make_pair(lang, score));
     }
-    result.threeGrams_.insert(std::make_pair(
+    target->threeGrams_.insert(std::make_pair(
       key, langScores
     ));
-  }
-  // array of gram data
-  return result;
+  }  
 }
-LanguageProfiles LanguageProfiles::loadFromFile(const std::string& fpath) {
+
+void LanguageProfiles::initFromFile(LanguageProfiles *target, const std::string& fpath) {
   string data;
   util::fs::readFileSync(fpath, data);
-  return LanguageProfiles::loadFromJsonString(data);
+  LanguageProfiles::initFromJson(target, data);
+}
+
+LanguageProfiles LanguageProfiles::loadFromJson(const std::string& jsonData) {
+  LanguageProfiles result;
+  LanguageProfiles::initFromJson(&result, jsonData);
+  return result;
+}
+
+LanguageProfiles LanguageProfiles::loadFromFile(const std::string& fpath) {
+  LanguageProfiles result;
+  LanguageProfiles::initFromFile(&result, fpath);
+  return result;
 }
 
 

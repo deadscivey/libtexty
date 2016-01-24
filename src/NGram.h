@@ -34,6 +34,16 @@ struct NGram {
     }
     return true;
   }
+  bool operator<(const NGram &other) const {
+    for (size_t i = 0; i < N; i++) {
+      auto cp = codepoints[i];
+      auto otherCp = other.codepoints[i];
+      if (cp < otherCp) return true;
+      if (cp == otherCp) continue;
+      return false;
+    }
+    return false;
+  }
   value_type& operator[](size_t idx) {
     return codepoints[idx];
   }
