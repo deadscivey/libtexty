@@ -13,6 +13,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/external/utfcpp/source
     ${CMAKE_CURRENT_SOURCE_DIR}/external/libstemmer/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external/pybind11/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/json/src
     ${CMAKE_CURRENT_SOURCE_DIR}/external/googletest/googletest/include
 )
 
@@ -75,6 +76,8 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Language.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hashing/hash_funcs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/misc.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/util/ScopeGuard.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/util/fs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/UnicodeBlock.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/support.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/BaseStemmer.cpp
@@ -107,11 +110,19 @@ set(GTEST_LIB
 )
 
 add_executable(unit_test_runner
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_Utf8View.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_TokenView.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_ShingleView2.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/test_RandomAccessUtf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_Utf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_TokenView.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_ShingleView2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_RandomAccessUtf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/test/unit/test_LanguageProfiles.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp
 )
-
 target_link_libraries(unit_test_runner texty ${GTEST_LIB} ${LIBS})
+
+add_executable(func_test_runner
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/test/functional/test_language_detection.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp    
+)
+
+target_link_libraries(func_test_runner texty ${GTEST_LIB} ${LIBS})
+

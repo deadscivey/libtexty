@@ -18,3 +18,7 @@ upload-python:
 unit-test:
 	cd build && cmake ../ && make unit_test_runner -j4
 	./build/unit_test_runner
+
+func-test:
+	cd build && cmake ../ && make func_test_runner -j4
+	./build/func_test_runner

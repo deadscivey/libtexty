@@ -16,3 +16,6 @@
 [submodule "external/langdetect"]
 	path = external/langdetect
 	url = git@github.com:mimino666/langdetect
+[submodule "external/json"]
+	path = external/json
+	url = https://github.com/nlohmann/json

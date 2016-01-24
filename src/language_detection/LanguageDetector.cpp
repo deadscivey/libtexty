@@ -26,4 +26,11 @@ Language LanguageDetector::detect(const string &text, size_t seed) {
   return runner.detect();
 }
 
+std::map<Language, double> LanguageDetector::getProbabilities(const string &text, size_t seed) {
+  auto ngramView = RandomAccessNGramView::create(text);
+  DetectionRunner::sampler_type sampler(std::move(ngramView), seed);
+  DetectionRunner runner(profiles_, sampler);
+  return runner.getProbabilities();
+}
+
 }} // texty::language_detection

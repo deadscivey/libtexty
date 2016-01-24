@@ -1,11 +1,16 @@
 #include <vector>
 #include <string>
+#include <map>
+
 #include "language_detection/DetectionRunner.h"
 #include "util/macros.h"
+#include "util/pretty_print.h"
 
 using namespace std;
 
 namespace texty { namespace language_detection {
+
+using util::pretty_print::prettyPrint;
 
 using string_views::RandomAccessNGramView;
 const double CONV_THRESHOLD = 0.99999;
@@ -29,7 +34,17 @@ Language DetectionRunner::getBestScore() {
   return maxLang;
 }
 
+map<Language, double> DetectionRunner::getProbabilities() {
+  run();
+  return langScores_;
+}
+
 Language DetectionRunner::detect() {
+  run();
+  return getBestScore();
+}
+
+void DetectionRunner::run() {
   const size_t numTrials = 7;
   for (size_t trialN = 0; trialN < numTrials; trialN++) {
     alpha_.warble();
@@ -43,7 +58,6 @@ Language DetectionRunner::detect() {
       langScores_[item.first] += toAdd;
     }
   }
-  return getBestScore();
 }
 
 const LanguageProfiles::lang_map& DetectionRunner::getRandomNGramScores() {
@@ -73,8 +87,13 @@ std::map<Language, double> DetectionRunner::runTrial() {
   for (size_t i = 0;; i++) {
     double weight = alpha_.get() / BASE_FREQ;
     auto langWordScores = getRandomNGramScores();
-    for (auto &item: langWordScores) {
-      probs[item.first] *= (weight * item.second);
+    for (auto &item: probs) {
+      double score = 0.0;
+      auto found = langWordScores.find(item.first);
+      if (found != langWordScores.end()) {
+        score = found->second;
+      }
+      item.second *= score + weight;
     }
     if (i % 5 == 0) {
       double maxp = 0.0;

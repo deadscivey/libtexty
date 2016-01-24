@@ -12,6 +12,7 @@ class LanguageDetector {
  public:
   LanguageDetector(LanguageProfiles profiles);
   Language detect(const std::string&, size_t seed);
+  std::map<Language, double> getProbabilities(const std::string&, size_t seed);
 };
 
 }} // texty::language_detection

@@ -30,12 +30,14 @@ class DetectionRunner {
   std::map<Language, double> runTrial();
   Language getBestScore();
   const LanguageProfiles::lang_map& getRandomNGramScores();
+  void run();
  public:
   DetectionRunner(
     LanguageProfiles &profiles,
     sampler_type &ngramSampler
   );
   Language detect();
+  std::map<Language, double> getProbabilities();
 };
 
 }} // langdetectpp::detection
