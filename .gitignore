@@ -2,5 +2,11 @@ build
 a.out
 *.o
 *.pyc
+*.pyo
 MANIFEST
 dist
+*.egg-info
+*~
+*.tmp
+*.log
+
