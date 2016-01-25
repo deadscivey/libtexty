@@ -89,7 +89,7 @@ setup(
         'something': 'textypy2/data/something'
     },
     include_package_data=True,
-    version = '0.1.4',
+    version = '0.1.5',
     description = 'python interface for libtexty',
     maintainer = 'Scott Ivey',
     maintainer_email='scott.ivey@gmail.com',
