@@ -8,9 +8,9 @@
 namespace texty { namespace language_detection {
 
 // this is a disgusting singleton class used to ease integration
-// with Python.  In C++, it's a lot cleaner to use a `LanguageDetector`,
+// with Python.  In C++, it's a lot cleaner to use an `OwningLanguageDetector`,
 // which manages the lifetime of its own `LanguageProfiles` instance.
-// (and `LanguageDetector` is thread-safe; you only need one.)
+// (and `OwningLanguageDetector` is thread-safe; you only need one.)
 
 class GlobalLanguageProfiles {
  protected:
