@@ -1,4 +1,4 @@
-.PHONY: run deps clean-deps
+.PHONY: run deps clean-deps build-python upload-python copy-data
 
 run:
 	mkdir -p build
@@ -12,7 +12,14 @@ deps:
 clean-deps:
 	cd external/libstemmer && make clean
 
-upload-python:
+copy-data:
+	rm -rf textypy/data
+	cp -r data textypy
+
+build-python: copy-data
+	python setup.py sdist
+
+upload-python: copy-data
 	python setup.py sdist upload -r pypi
 
 unit-test:

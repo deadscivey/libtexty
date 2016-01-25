@@ -1,7 +1,7 @@
 # from distutils.core import setup, Extension
 from setuptools import setup, Extension
 
-textypy = Extension('textypy',
+textypy_libtexty = Extension('textypy_libtexty',
     sources=[
         'src/Language.cpp',
         'src/hashing/hash_funcs.cpp',
@@ -86,7 +86,7 @@ textypy = Extension('textypy',
 setup(
     name = 'textypy',
     package_data = {
-        'language_profiles': 'data/language_profiles.json'
+        'something': 'textypy2/data/something'
     },
     include_package_data=True,
     version = '0.1.4',
@@ -94,5 +94,6 @@ setup(
     maintainer = 'Scott Ivey',
     maintainer_email='scott.ivey@gmail.com',
     url='https://github.com/scivey/libtexty',
-    ext_modules = [textypy]
+    ext_modules = [textypy_libtexty],
+    packages=['textypy']
 )

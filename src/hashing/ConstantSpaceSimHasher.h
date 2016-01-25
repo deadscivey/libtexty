@@ -2,7 +2,6 @@
 #include <string>
 #include <sstream>
 
-#include <glog/logging.h>
 #include "hashing/HashFamily.h"
 #include "hashing/BloomFilter.h"
 #include "string_views/ShingleView2.h"

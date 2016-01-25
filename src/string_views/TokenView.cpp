@@ -3,7 +3,6 @@
 #include "util/misc.h"
 #include "unicode/support.h"
 #include <string>
-#include <glog/logging.h>
 
 using namespace std;
 

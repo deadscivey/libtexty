@@ -5,6 +5,8 @@ graft external/smhasher/src
 graft external/json/src
 graft external/libstemmer
 graft data
+recursive-include textypy/data *
+recursive-include data *
 
 
 

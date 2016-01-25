@@ -1,8 +1,8 @@
 #include "unicode/UnicodeBlock.h"
 #include "unicode/support.h"
+#include "util/macros.h"
 #include <utf8.h>
 #include <string>
-#include <glog/logging.h>
 
 using namespace std;
 
@@ -75,7 +75,7 @@ bool isBasicLatinLetter(uint32_t cp) {
 
   // 122 = 'z'
   if (cp > 122) {
-    DCHECK(cp <= 127);
+    DEBUG_CHECK(cp <= 127);
     return false;
   }
 

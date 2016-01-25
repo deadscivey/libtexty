@@ -2,7 +2,6 @@
 #include <functional>
 #include <bitset>
 #include <array>
-#include <glog/logging.h>
 
 namespace texty { namespace hashing {
 

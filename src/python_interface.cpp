@@ -58,8 +58,8 @@ std::string detect_language(std::string text) {
 
 namespace py = pybind11;
 
-PYBIND11_PLUGIN(textypy) {
-    py::module m("textypy", "libtexty python interface");
+PYBIND11_PLUGIN(textypy_libtexty) {
+    py::module m("textypy_libtexty", "libtexty python interface");
 
     m.def("simhash", &texty::python_interface::simhash, "Compute simhash score of 2-shingles for given text");
     m.def("rotate_bits", &texty::python_interface::rotate_bits, "Get a vector of rotations of a 64-bit value");
