@@ -263,8 +263,25 @@ string Node::getText() const {
   return oss.str();
 }
 
-Node Node::dfFindFirst(Node::filter_visitor func) const {
+Node Node::dfFindFirst(Node::filter_visitor choosePred,
+    Node::filter_visitor recursePred) const {
+  if (!good()) {
+    return Node();
+  }
+  Node result;
+  dfs(recursePred,
+    [choosePred, &result](const Node& node, Node::escape_func escaper) {
+      if (choosePred(node)) {
+        result = node;
+        escaper();
+      }
+    }
+  );
+  return result;
+}
 
+Node Node::dfFindFirst(Node::filter_visitor choosePred) const {
+  return dfFindFirst(choosePred, util::always<Node>);
 }
 
 }} // texty::html

@@ -83,7 +83,8 @@ class Node {
  public:
   void dfs(filter_visitor, escape_visitor) const;
   void dfs(escape_visitor) const;
-  Node dfFindFirst(filter_visitor) const;
+  Node dfFindFirst(filter_visitor choosePred, filter_visitor recursePred) const;
+  Node dfFindFirst(filter_visitor choosePred) const;
   bool walkSiblings(escape_visitor) const;
 };
 
