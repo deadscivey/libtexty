@@ -174,7 +174,13 @@ void Node::dfs(Node::filter_visitor filterFn,
 }
 
 void Node::dfs(Node::escape_visitor mainFn) const {
-  return dfs(util::always<Node>, mainFn);
+  dfs(util::always<Node>, mainFn);
+}
+
+void Node::dfs(Node::non_escape_visitor mainFn) const {
+  dfs([mainFn](const Node& node, Node::escape_func) {
+    mainFn(node);
+  });
 }
 
 bool Node::hasParent() const {

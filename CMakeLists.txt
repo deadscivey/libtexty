@@ -131,6 +131,7 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/Tag.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboVectorWrapper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboOutputWrapper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/MetaTags.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )

@@ -73,7 +73,7 @@ class Node {
 
   NodeVector children() const;
   using filter_visitor = std::function<bool (const Node&)>;
-  using main_visitor = std::function<void (const Node&)>;
+  using non_escape_visitor = std::function<void (const Node&)>;
   using escape_func = std::function<void()>;
   using escape_visitor = std::function<void(const Node&, escape_func)>;
 
@@ -83,6 +83,7 @@ class Node {
  public:
   void dfs(filter_visitor, escape_visitor) const;
   void dfs(escape_visitor) const;
+  void dfs(non_escape_visitor) const;
   Node dfFindFirst(filter_visitor choosePred, filter_visitor recursePred) const;
   Node dfFindFirst(filter_visitor choosePred) const;
   bool walkSiblings(escape_visitor) const;
