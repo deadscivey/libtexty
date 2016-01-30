@@ -118,6 +118,7 @@ add_executable(unit_test_runner
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_ShingleView2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_RandomAccessUtf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/test/unit/test_LanguageProfiles.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/structures/test/unit/test_RollingQueue.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp
 )
 target_link_libraries(unit_test_runner texty ${GTEST_LIB} ${LIBS})

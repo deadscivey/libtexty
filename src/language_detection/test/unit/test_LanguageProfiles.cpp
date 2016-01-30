@@ -51,7 +51,7 @@ TEST(TestLanguageProfiles, TestLoadFromJson) {
     }) }
   };  
   json allGrams = json::array({oneGrams, twoGrams, threeGrams});
-  auto prof = LanguageProfiles::loadFromJsonString(allGrams.dump());
+  auto prof = LanguageProfiles::loadFromJson(allGrams.dump());
   auto scores1 = prof.getScores(NGram<uint32_t, 1> {52});
   EXPECT_TRUE(scores1[Language::EN] > 0.30);
   EXPECT_TRUE(scores1[Language::EN] < 0.32);
