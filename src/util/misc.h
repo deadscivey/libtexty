@@ -4,6 +4,9 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <string>
+#include <sstream>
+#include <functional>
 
 namespace texty { namespace util {
 
@@ -48,6 +51,19 @@ std::vector<T1> keyVec(const std::map<T1, T2> &aMap) {
   return result;
 }
 
+template<typename T>
+std::string joinVec(const std::string &joinWith, const std::vector<T> &aVec) {
+  std::ostringstream result;
+  size_t last = aVec.size() - 1;
+  for (size_t i = 0; i <= last; i++) {
+    result << aVec[i];
+    if (i != last) {
+      result << joinWith;
+    }
+  }
+  return result.str();
+}
+
 template<
   typename T,
   typename TIgnore = typename std::enable_if<std::is_enum<T>::value>::type
@@ -58,5 +74,11 @@ size_t hashEnum(T enumVal) {
     static_cast<underlying>(enumVal)
   );
 }
+
+template<typename T>
+bool always(const T &) {
+  return true;
+}
+
 
 }} // texty::util

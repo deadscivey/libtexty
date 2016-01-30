@@ -15,6 +15,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/external/pybind11/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external/json/src
     ${CMAKE_CURRENT_SOURCE_DIR}/external/googletest/googletest/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src
 )
 
 link_directories(
@@ -62,8 +63,29 @@ add_library(libstemmer
     ${LIBSTEMMER_SOURCES}
 )
 
+
+set(LIBGUMBO_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/attribute.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/char_ref.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/error.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/parser.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/string_buffer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/string_piece.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/tag.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/tokenizer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/utf8.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/util.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/gumbo-parser/src/vector.c
+)
+
+add_library(libgumbo
+    ${LIBGUMBO_SOURCES}
+)
+
+
 set(LIBS
     libstemmer
+    libgumbo
     folly
     mitie
     glog
@@ -94,6 +116,11 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/OwningLanguageDetector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/GlobalLanguageDetector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/NonOwningLanguageDetector.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/HtmlDom.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/Node.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/Tag.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboVectorWrapper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboOutputWrapper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )
@@ -118,7 +145,7 @@ add_executable(unit_test_runner
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_ShingleView2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_RandomAccessUtf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/test/unit/test_LanguageProfiles.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/structures/test/unit/test_RollingQueue.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/test/unit/test_HtmlDomAndNode.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp
 )
 target_link_libraries(unit_test_runner texty ${GTEST_LIB} ${LIBS})
