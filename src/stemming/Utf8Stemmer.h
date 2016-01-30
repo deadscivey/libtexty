@@ -1,19 +1,18 @@
 #pragma once
-#include "stemming/BaseStemmer.h"
+#include <string>
 #include "Language.h"
-
-struct sb_stemmer;
+#include "stemming/SbStemmerWrapper.h"
 
 namespace texty { namespace stemming {
 
-class Utf8Stemmer: public BaseStemmer {
+class Utf8Stemmer {
 protected:
-  struct sb_stemmer *stemmer_;
   Language language_;
+  SbStemmerWrapper stemmer_;
 public:
   Utf8Stemmer(Language lang);
-  size_t getStemPos(const char *toStem, size_t length) override;
-  ~Utf8Stemmer();
+  size_t getStemPos(const char *toStem, size_t length);
+  size_t getStemPos(const std::string&);
 };
 
 }} // texty::stemming

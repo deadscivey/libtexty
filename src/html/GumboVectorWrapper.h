@@ -16,10 +16,10 @@ class GumboVectorWrapper {
   size_t size() const;
 
   class Iterator {
-    GumboVectorWrapper *parent_;
+    const GumboVectorWrapper *parent_;
     size_t idx_;
    public:
-    Iterator(GumboVectorWrapper*, size_t);
+    Iterator(const GumboVectorWrapper*, size_t);
     bool operator!=(const Iterator&other) const;
     Iterator& operator++();
     Iterator operator++(int);

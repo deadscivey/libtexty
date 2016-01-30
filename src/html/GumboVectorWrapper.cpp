@@ -37,7 +37,7 @@ VecIter GumboVectorWrapper::end() const {
   return VecIter(this, size());
 }
 
-VecIter::Iterator(GumboVectorWrapper *parent, size_t idx)
+VecIter::Iterator(const GumboVectorWrapper *parent, size_t idx)
   : parent_(parent), idx_(idx){}
 
 VecIter VecIter::operator++(int) {

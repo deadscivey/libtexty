@@ -102,8 +102,18 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/fs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/UnicodeBlock.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/support.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/BaseStemmer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/Utf8Stemmer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/SbStemmerWrapper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/StemmerManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/ThreadSafeStemmerManager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/StopwordFilter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/MultiLanguageStopwordFilter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/english_stopwords.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/french_stopwords.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/german_stopwords.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/italian_stopwords.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/russian_stopwords.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/spanish_stopwords.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8Iterator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessNGramView.cpp

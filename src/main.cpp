@@ -15,6 +15,9 @@
 #include <vector>
 #include <iostream>
 
+#include "stemming/StemmerManager.h"
+#include "stemming/ThreadSafeStemmerManager.h"
+
 #include "util/pretty_print.h"
 #include "hashing/hash_funcs.h"
 #include "hashing/SimHasher.h"
@@ -53,10 +56,13 @@ std::map<string, string> loadData() {
 using texty::string_views::NGramSampler;
 using texty::randomness::RandomDistribution;
 using texty::language_detection::LanguageProfiles;
+using texty::stemming::ThreadSafeStemmerManager;
 int main() {
   google::InstallFailureSignalHandler();
   string fname = "data/language_profiles.json";
   auto profs = LanguageProfiles::loadFromFile(fname);
+  ThreadSafeStemmerManager mgr1;
+  ThreadSafeStemmerManager mgr2(std::move(mgr1));
 }
 
 // int main() {
