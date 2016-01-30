@@ -29,11 +29,11 @@ const GumboNode* GumboVectorWrapper::operator[](size_t idx) const {
   return at(idx);
 }
 
-VecIter GumboVectorWrapper::begin() {
+VecIter GumboVectorWrapper::begin() const {
   return VecIter(this, 0);
 }
 
-VecIter GumboVectorWrapper::end() {
+VecIter GumboVectorWrapper::end() const {
   return VecIter(this, size());
 }
 

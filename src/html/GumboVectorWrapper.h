@@ -28,8 +28,8 @@ class GumboVectorWrapper {
   };
   friend class Iterator;
 
-  Iterator begin();
-  Iterator end();
+  Iterator begin() const;
+  Iterator end() const;
 };
 
 
