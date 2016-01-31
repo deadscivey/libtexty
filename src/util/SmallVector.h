@@ -2,6 +2,7 @@
 #include <array>
 #include <vector>
 #include <initializer_list>
+#include <iterator>
 #include "util/macros.h"
 #include "util/UniqueNullablePtr.h"
 
@@ -20,17 +21,14 @@ class SmallVector {
   size_t lastIndex_ = 0;
 
   static size_t vectorIndex(size_t index) {
-    DEBUG_CHECK(index >= (SmallSize - 1));
-    return index - (SmallSize - 1);
+    DEBUG_CHECK(index >= SmallSize);
+    return index - SmallSize;
   }
   static bool isArrayIndex(size_t index) {
-    return index < (SmallSize - 1);
+    return index < SmallSize;
   }
   static bool isVectorIndex(size_t index) {
     return ! isArrayIndex(index);
-  }
-  bool isOverflown() const {
-    return SmallVector::isVectorIndex(lastIndex_);
   }
 
  public:
@@ -69,8 +67,17 @@ class SmallVector {
     return *this;
   }
 
-  void push_back(const T& elem) {
-    if (!isOverflown()) {
+  bool isOverflown() const {
+    if (lastIndex_ == 0) {
+      return false;
+    }
+    return SmallVector::isVectorIndex(lastIndex_ - 1);
+  }
+
+ protected:
+  template<typename T2>
+  void doPushBack(T2 elem) {
+    if (SmallVector::isArrayIndex(lastIndex_)) {
       arrayItems_[lastIndex_] = elem;
     } else {
       if (!vectorItems_) {
@@ -78,19 +85,16 @@ class SmallVector {
       }
       vectorItems_->push_back(elem);
     }
-    lastIndex_++;
+    lastIndex_++;    
+  }
+ public:
+
+  void push_back(const T& elem) {
+    doPushBack(elem);
   }
 
   void push_back(T&& elem) {
-    if (!isOverflown()) {
-      arrayItems_[lastIndex_] = elem;
-    } else {
-      if (!vectorItems_) {
-        vectorItems_ = new vector_type; 
-      }
-      vectorItems_->push_back(elem);
-    }
-    lastIndex_++;
+    doPushBack(elem);
   }
 
   void pop_back() {
@@ -131,7 +135,17 @@ class SmallVector {
   class Iterator;
   class ConstIterator;
 
-  class Iterator {
+  class Iterator: std::iterator<std::forward_iterator_tag, T> {
+   public:
+    using iterator_category = std::forward_iterator_tag;
+    using parent_iter = std::iterator<std::forward_iterator_tag, T>;
+    using value_type = typename parent_iter::value_type;
+    using difference_type = typename parent_iter::difference_type;
+    using pointer = typename parent_iter::pointer;
+    using reference = typename parent_iter::reference;
+
+
+   protected:
     SmallVector *parent_ {nullptr};
     size_t index_ {0};
    public:
@@ -171,7 +185,16 @@ class SmallVector {
     return iterator(this, size());
   }
 
-  class ConstIterator {
+  class ConstIterator: std::iterator<std::forward_iterator_tag, T> {
+   public:
+    using iterator_category = std::forward_iterator_tag;
+    using parent_iter = std::iterator<std::forward_iterator_tag, T>;
+    using value_type = typename parent_iter::value_type;
+    using difference_type = typename parent_iter::difference_type;
+    using pointer = typename parent_iter::pointer;
+    using reference = typename parent_iter::reference;
+
+   protected:
     const SmallVector *parent_ {nullptr};
     size_t index_ {0};
    public:
@@ -284,6 +307,13 @@ class SmallVector {
       pos = insert(pos, *it);
     }
     return Iterator(this, pos.index_ + 1);
+  }
+
+  std::vector<T> copyToVector() const {
+    std::vector<T> result;
+    result.reserve(size());
+    result.insert(result.begin(), begin(), end());
+    return result;
   }
 
 };
