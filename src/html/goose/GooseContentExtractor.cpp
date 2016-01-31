@@ -17,7 +17,6 @@ GooseContentExtractor::GooseContentExtractor(GooseOptions options)
   : options_(options) {}
 
 string GooseContentExtractor::extract(const HtmlDom &dom, Language lang) {
-  StupidStopwordCounter counter(lang);
 
   using collector_type = TextNodeCollector<
     TextCleaner, StupidStopwordCounter
@@ -30,6 +29,7 @@ string GooseContentExtractor::extract(const HtmlDom &dom, Language lang) {
     TextCleaner, booster_type
   >;
 
+  StupidStopwordCounter counter(lang, stemmers_.getShared(lang));
   BaseContentExtractor<
     scorer_type, TextCleaner, collector_type,
     StupidStopwordCounter, booster_type

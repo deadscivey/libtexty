@@ -4,6 +4,7 @@
 #include <memory>
 #include <set>
 #include <vector>
+#include <glog/logging.h>
 #include "html/Node.h"
 
 namespace texty { namespace html { namespace goose {
@@ -83,7 +84,10 @@ class NodeScorer {
       return;
     }
 
+    LOG(INFO) << "collecting...";
     auto nodesWithText = textCollector_.collect(rootNode_);
+    LOG(INFO) << "collected: " << nodesWithText.size();
+
     double bottomNodesForNegativeScore = 0.25 * nodesWithText.size();
     double startingBoost = 1.0;
     size_t i = 0;

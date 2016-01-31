@@ -20,6 +20,7 @@ SbStemmerWrapper& SbStemmerWrapper::operator=(SbStemmerWrapper &&other) {
   stemmer_ = other.stemmer_;
   countryCode_ = other.countryCode_;
   other.stemmer_ = nullptr;
+  return *this;
 }
 
 size_t SbStemmerWrapper::getStemPos(const char *toStem, size_t length) {

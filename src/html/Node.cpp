@@ -1,7 +1,9 @@
 #include <gumbo.h>
+#include <glog/logging.h>
 #include "html/GumboVectorWrapper.h"
 #include "html/Node.h"
 #include "util/misc.h"
+
 using namespace std;
 
 namespace texty { namespace html {
@@ -46,7 +48,7 @@ bool Node::isText() const {
   if (!good()) {
     return false;
   }
-  return node_->type == GUMBO_NODE_ELEMENT;  
+  return node_->type == GUMBO_NODE_TEXT;  
 }
 
 bool Node::isWhitespace() const {
@@ -60,10 +62,14 @@ bool Node::isElement() const {
   if (!good()) {
     return false;
   }
+  uintptr_t nodePtr = (uintptr_t) node_;
   return node_->type == GUMBO_NODE_ELEMENT;
 }
 
 size_t Node::childCount() const {
+  if (!isElement()) {
+    return 0;
+  }
   auto offspring = children();
   return offspring.size();
 }
@@ -147,6 +153,9 @@ void Node::dfs(Node::filter_visitor filterFn,
     Node::escape_visitor mainFn,
     Node::escape_func escaper,
     const bool &keepGoing) const {
+  if (!good()) {
+    return;
+  }
   mainFn(*this, escaper);
   if (!keepGoing) {
     return;
@@ -300,6 +309,28 @@ bool Node::operator!=(const Node &other) const {
 
 bool Node::operator<(const Node &other) const {
   return getGumboUintPtr() < other.getGumboUintPtr();
+}
+
+bool Node::nodeIsElement(const Node &node) {
+  return node.isElement();
+}
+
+bool Node::nodeIsText(const Node &node) {
+  return node.isText();
+}
+
+bool Node::nodeIsWhitespace(const Node &node) {
+  return node.isWhitespace();
+}
+
+bool Node::nodeHasTag(Tag tag, const Node &node) {
+  return node.hasTag(tag);
+}
+
+function<bool (const Node&)> Node::nodeHasTag(Tag tag) {
+  return [tag](const Node& node) {
+    return Node::nodeHasTag(tag, node);
+  };
 }
 
 }} // texty::html

@@ -10,7 +10,7 @@ namespace texty { namespace html {
 
 class Node {
  protected:
-  const GumboNode *node_;
+  const GumboNode *node_ {nullptr};
  public:
   Node(const GumboNode*);
   Node(const Node &other);
@@ -31,7 +31,6 @@ class Node {
   Node parent() const;
   bool refEquals(const Node &other) const;
   bool refEquals(const GumboNode *other) const;
-
  protected:
   GumboAttribute* getGumboAttribute(const std::string &attrName) const;
  public:
@@ -90,6 +89,13 @@ class Node {
   bool walkSiblings(escape_visitor) const;
   bool operator!=(const Node &other) const;
   bool operator<(const Node &other) const;
+
+  static bool nodeIsElement(const Node&);
+  static bool nodeIsText(const Node&);
+  static bool nodeIsWhitespace(const Node&);
+  static bool nodeHasTag(Tag, const Node&);
+
+  static std::function<bool (const Node&)> nodeHasTag(Tag);
 };
 
 }} // texty::html

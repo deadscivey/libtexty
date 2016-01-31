@@ -5,7 +5,7 @@ namespace texty { namespace html {
 
 class GumboVectorWrapper {
  protected:
-  const GumboVector *gumboVec_;
+  const GumboVector *gumboVec_ {nullptr};
  public:
   GumboVectorWrapper();
   GumboVectorWrapper(const GumboVector *);

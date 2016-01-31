@@ -1,9 +1,9 @@
 #pragma once
 #include "html/Node.h"
 #include "html/goose/util.h"
-
 #include <vector>
 #include <set>
+#include <glog/logging.h>
 
 namespace texty { namespace html { namespace goose {
 
@@ -26,7 +26,11 @@ class TextNodeCollector {
         return;
       }
       auto nodeText = cleaner_.getText(node);
-      if (!hasHighLinkDensity(node, nodeText) && counter_.countStopwords(nodeText) > 2) {
+      bool highLinks = hasHighLinkDensity(node, nodeText);
+      size_t counts = counter_.countStopwords(nodeText);
+      LOG(INFO) << "[ stops: " << counts << " ]\t" << nodeText;
+      LOG(INFO) << "[ highLinks? " << highLinks << " ]";
+      if (!highLinks && counts > 2) {
         withText.push_back(node);
       }
     });

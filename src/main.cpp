@@ -65,6 +65,7 @@ int main() {
   CHECK(folly::readFile("text/html/jezebel1.txt", data));
   auto result = extractor.extract(data, texty::Language::EN);
   LOG(INFO) << result;
+  LOG(INFO) << result.size();
 }
 
 // int main() {

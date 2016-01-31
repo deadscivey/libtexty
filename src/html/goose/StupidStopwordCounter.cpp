@@ -1,4 +1,3 @@
-#pragma once
 #include "html/goose/StupidStopwordCounter.h"
 #include "stopwords/StopwordFilter.h"
 #include "string_views/TokenView.h"
@@ -9,10 +8,12 @@ using namespace std;
 
 namespace texty { namespace html { namespace goose {
 
+using stemming::Utf8Stemmer;
 using string_views::TokenView;
 
-StupidStopwordCounter::StupidStopwordCounter(Language lang)
-  : language_(lang), stopwordFilter_(lang) {}
+StupidStopwordCounter::StupidStopwordCounter(Language lang,
+    shared_ptr<Utf8Stemmer> stemmer)
+  : language_(lang), stopwordFilter_(lang), stemmer_(stemmer) {}
 
 size_t StupidStopwordCounter::countStopwords(const string &text) {
   TokenView view(text);
@@ -22,6 +23,9 @@ size_t StupidStopwordCounter::countStopwords(const string &text) {
   for (auto toke: view) {
     const char *tokenStart = beginning + toke.first;
     const char *tokenEnd = beginning + toke.second;
+    if (toke.second <= toke.first) {
+      break;
+    }
     size_t diff = toke.second - toke.first;
     currentToken.clear();
     const char *it = tokenStart;
@@ -31,7 +35,13 @@ size_t StupidStopwordCounter::countStopwords(const string &text) {
     }
     if (stopwordFilter_.isStopword(currentToken)) {
       count++;
-    }
+    } else {
+      currentToken.erase(stemmer_->getStemPos(currentToken));
+      if (stopwordFilter_.isStopword(currentToken)) {
+        count++;
+      }
+    }    
+
   }
   return count;
 }

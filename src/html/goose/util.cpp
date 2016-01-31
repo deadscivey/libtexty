@@ -1,3 +1,4 @@
+#include <glog/logging.h>
 #include "html/goose/util.h"
 #include "string_views/TokenView.h"
 using namespace std;
@@ -9,8 +10,10 @@ using string_views::TokenView;
 size_t getTokenCount(const string &text) {
   TokenView view(text);
   size_t tokenCount = 0;
-  for (auto ignore : view) {
-    ((void) ignore);
+  for (auto toke : view) {
+    if (toke.second <= toke.first) {
+      break;
+    }
     tokenCount++;
   }
   return tokenCount;
