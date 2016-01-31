@@ -165,6 +165,7 @@ add_executable(unit_test_runner
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/test/unit/test_HtmlDomAndNode.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/test/unit/test_MetaTags.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/test/unit/test_DefaultValueMap.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/util/test/unit/test_RollingQueue.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/testing/run_tests.cpp
 )
 target_link_libraries(unit_test_runner texty ${GTEST_LIB} ${LIBS})
