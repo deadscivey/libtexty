@@ -11,9 +11,12 @@ namespace texty { namespace html {
 class MetaTags {
  protected:
   std::map<std::string, std::string> tagValues_;
+  const std::string& getFirstOrNothing(const std::vector<std::string>&) const;
  public:
   MetaTags(std::map<std::string, std::string> vals);
   static MetaTags extract(const Node& startingNode);
+  const std::string& getPublishDate() const;
+  const std::string& getTitle() const;
 };
 
 

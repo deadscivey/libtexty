@@ -132,6 +132,11 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboVectorWrapper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/GumboOutputWrapper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/MetaTags.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/goose/GooseContentExtractor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/goose/GooseOptions.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/goose/StupidStopwordCounter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/goose/TextCleaner.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/html/goose/util.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/City.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/external/smhasher/src/MurmurHash3.cpp
 )

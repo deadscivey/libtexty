@@ -78,7 +78,8 @@ class Node {
   using escape_visitor = std::function<void(const Node&, escape_func)>;
 
  protected:
-  void dfs(filter_visitor, escape_visitor, escape_func, const bool &keepGoing) const;    
+  void dfs(filter_visitor, escape_visitor, escape_func, const bool &keepGoing) const;
+  uintptr_t getGumboUintPtr() const;
 
  public:
   void dfs(filter_visitor, escape_visitor) const;
@@ -87,6 +88,8 @@ class Node {
   Node dfFindFirst(filter_visitor choosePred, filter_visitor recursePred) const;
   Node dfFindFirst(filter_visitor choosePred) const;
   bool walkSiblings(escape_visitor) const;
+  bool operator!=(const Node &other) const;
+  bool operator<(const Node &other) const;
 };
 
 }} // texty::html

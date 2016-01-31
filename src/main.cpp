@@ -17,7 +17,7 @@
 
 #include "stemming/StemmerManager.h"
 #include "stemming/ThreadSafeStemmerManager.h"
-
+#include "html/goose/GooseContentExtractor.h"
 #include "util/pretty_print.h"
 #include "hashing/hash_funcs.h"
 #include "hashing/SimHasher.h"
@@ -27,7 +27,7 @@
 #include "string_views/NGramSampler.h"
 #include "language_detection/LanguageProfiles.h"
 #include "randomness/RandomDistribution.h"
-
+#include "Language.h"
 #include "hashing/BloomFilter.h"
 
 #include "util/misc.h"
@@ -57,12 +57,14 @@ using texty::string_views::NGramSampler;
 using texty::randomness::RandomDistribution;
 using texty::language_detection::LanguageProfiles;
 using texty::stemming::ThreadSafeStemmerManager;
+using texty::html::goose::GooseContentExtractor;
 int main() {
   google::InstallFailureSignalHandler();
-  string fname = "data/language_profiles.json";
-  auto profs = LanguageProfiles::loadFromFile(fname);
-  ThreadSafeStemmerManager mgr1;
-  ThreadSafeStemmerManager mgr2(std::move(mgr1));
+  GooseContentExtractor extractor;
+  string data;
+  CHECK(folly::readFile("text/html/jezebel1.txt", data));
+  auto result = extractor.extract(data, texty::Language::EN);
+  LOG(INFO) << result;
 }
 
 // int main() {

@@ -9,7 +9,6 @@ using namespace std;
 
 namespace texty { namespace html {
 
-
 MetaTags::MetaTags(std::map<std::string, std::string> vals)
   : tagValues_(std::move(vals)) {}
 
@@ -38,6 +37,40 @@ MetaTags MetaTags::extract(const Node &startingNode) {
     }
   });
   return MetaTags(std::move(tags));
+}
+
+static const string nothing = "";
+
+
+const string& MetaTags::getFirstOrNothing(
+    const vector<string> &tagNames) const {
+  for (auto &name: tagNames) {
+    auto found = tagValues_.find(name);
+    if (found != tagValues_.end()) {
+      return found->second;
+    }
+  }
+  return nothing;
+}
+
+static const vector<string> pubdateTags {
+  "rnews:datePublished",
+  "article:published_time",
+  "OriginalPublicationDate",
+  "datePublished"
+};
+
+const string& MetaTags::getPublishDate() const {
+  return getFirstOrNothing(pubdateTags);
+}
+
+static const vector<string> titleTags {
+  "og:title",
+  "headline"
+};
+
+const string& MetaTags::getTitle() const {
+  return getFirstOrNothing(titleTags);
 }
 
 }} // text::html

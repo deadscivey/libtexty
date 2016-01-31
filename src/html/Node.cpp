@@ -290,4 +290,16 @@ Node Node::dfFindFirst(Node::filter_visitor choosePred) const {
   return dfFindFirst(choosePred, util::always<Node>);
 }
 
+uintptr_t Node::getGumboUintPtr() const {
+  return (uintptr_t) getGumboNode();
+}
+
+bool Node::operator!=(const Node &other) const {
+  return getGumboUintPtr() != other.getGumboUintPtr();
+}
+
+bool Node::operator<(const Node &other) const {
+  return getGumboUintPtr() < other.getGumboUintPtr();
+}
+
 }} // texty::html

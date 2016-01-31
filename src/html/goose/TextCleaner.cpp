@@ -1,0 +1,93 @@
+#include <regex>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
+#include "html/goose/TextCleaner.h"
+#include "html/Node.h"
+
+using namespace std;
+
+namespace texty { namespace html { namespace goose {
+
+namespace detail {
+
+  const vector<string> badClasses = {
+    "^side$|combx|retweet|mediaarticlerelated|menucontainer|",
+    "navbar|storytopbar-bucket|utility-bar|inline-share-tools",
+    "|comment|PopularQuestions|contact|foot|footer|Footer|footnote",
+    "|cnn_strycaptiontxt|cnn_html_slideshow|cnn_strylftcntnt",
+    "|^links$|meta$|shoutbox|sponsor",
+    "|tags|socialnetworking|socialNetworking|cnnStryHghLght",
+    "|cnn_stryspcvbx|^inset$|pagetools|post-attributes",
+    "|welcome_form|contentTools2|the_answers",
+    "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings",
+    "|date|^print$|popup|author-dropdown|tools|socialtools|byline",
+    "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text",
+    "|legende|ajoutVideo|timestamp|js_replies"
+  };
+
+  regex getBadClassesRegex() {
+    ostringstream oss;
+    for (auto &elem: badClasses) {
+      oss << elem;
+    }
+    string reggie = oss.str();
+    regex bad_re(reggie);
+    return bad_re;
+  }
+
+  static const set<Tag> badTagTypes {
+    Tag::STYLE, Tag::SCRIPT, Tag::EM
+  };
+
+} // detail
+
+bool TextCleaner::isBadTextNode(const Node &node) {
+    if (!node.isElement()) {
+        return false;
+    }
+    if (detail::badTagTypes.count(node.getTag()) > 0) {
+      return true;
+    }
+    string attr;
+    if (node.getAttr("id", attr) && regex_search(attr, badClasses_)) {
+      return true;
+    }
+    if (node.getAttr("class", attr) && regex_search(attr, badClasses_)) {
+      return true;
+    }
+    return false;
+}
+
+TextCleaner::TextCleaner() {
+  badClasses_ = detail::getBadClassesRegex();
+}
+
+void TextCleaner::getText(const Node &node, ostringstream &oss) {
+  if (node.isText()) {
+    node.getText(oss);
+    return;
+  } else if (node.isElement()) {
+    if (!isBadTextNode(node)) {
+      for (auto child: node.children()) {
+        getText(child, oss);
+        oss << " ";
+      }
+    }
+    if (node.hasTag(Tag::P)) {
+      oss << "\n\n";
+    } else if (node.hasTag(Tag::BR)) {
+      oss << "\n";
+    }
+  }
+}
+
+string TextCleaner::getText(const Node &node) {
+  ostringstream oss;
+  getText(node, oss);
+  return oss.str();
+}
+
+}}} // texty::html::goose
+
