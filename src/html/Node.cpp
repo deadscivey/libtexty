@@ -253,23 +253,34 @@ string Node::getAttr(const string &attrName) const {
   return result;
 }
 
-void Node::getText(ostringstream &oss) const {
+size_t Node::getText(ostringstream &oss) const {
   if (isText()) {
+    auto startPos = oss.tellp();
     oss << node_->v.text.text;
+    auto endPos = oss.tellp();
+    if (startPos < 0 || endPos <= startPos) {
+      return 0;
+    }
+    return endPos - startPos;
   }
   if (isElement()) {
     if (hasTag(Tag::SCRIPT) || hasTag(Tag::STYLE) || (!hasChildren())) {
-      return;
+      return 0;
     }
     size_t i = 0;
+    size_t appended = 0;
     size_t last = childCount() - 1;
     for (auto child: children()) {
-      child.getText(oss);
-      if (i < last) {
+      size_t childAdded = child.getText(oss);
+      appended += childAdded;
+      if (i < last && childAdded > 0) {
         oss << " ";
+        appended++;
       }
     }
+    return appended;
   }
+  return 0;
 }
 
 string Node::getText() const {

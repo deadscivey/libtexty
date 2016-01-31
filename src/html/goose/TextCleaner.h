@@ -13,7 +13,7 @@ class TextCleaner {
  public:
   TextCleaner();
   std::string getText(const Node &node);
-  void getText(const Node &node, std::ostringstream&);
+  size_t getText(const Node &node, std::ostringstream&);
 };
 
 }}} // texty::html::goose

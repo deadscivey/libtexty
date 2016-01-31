@@ -65,23 +65,31 @@ TextCleaner::TextCleaner() {
   badClasses_ = detail::getBadClassesRegex();
 }
 
-void TextCleaner::getText(const Node &node, ostringstream &oss) {
+size_t TextCleaner::getText(const Node &node, ostringstream &oss) {
   if (node.isText()) {
-    node.getText(oss);
-    return;
+    return node.getText(oss);
   } else if (node.isElement()) {
     if (!isBadTextNode(node)) {
+      size_t appended = 0;
       for (auto child: node.children()) {
-        getText(child, oss);
-        oss << " ";
+        size_t childAppended = getText(child, oss);
+        appended += childAppended;
+        if (childAppended > 0) {
+          oss << " ";
+          appended++;
+        }
       }
-    }
-    if (node.hasTag(Tag::P)) {
-      oss << "\n\n";
-    } else if (node.hasTag(Tag::BR)) {
-      oss << "\n";
+      if (node.hasTag(Tag::P)) {
+        oss << "\n\n";
+        appended += 2;
+      } else if (node.hasTag(Tag::BR)) {
+        oss << "\n";
+        appended += 1;
+      }
+      return appended;
     }
   }
+  return 0;
 }
 
 

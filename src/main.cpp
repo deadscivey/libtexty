@@ -19,6 +19,7 @@
 #include "stemming/ThreadSafeStemmerManager.h"
 #include "html/goose/GooseContentExtractor.h"
 #include "util/pretty_print.h"
+#include "cleaning/basic.h"
 #include "hashing/hash_funcs.h"
 #include "hashing/SimHasher.h"
 #include "hashing/ConstantSpaceSimHasher.h"
@@ -66,6 +67,10 @@ int main() {
   auto result = extractor.extract(data, texty::Language::EN);
   LOG(INFO) << result;
   LOG(INFO) << result.size();
+  cout << endl << endl;
+  LOG(INFO) << "CLEANED";
+  auto cleaned = texty::cleaning::basicClean(result);
+  LOG(INFO) << cleaned;
 }
 
 // int main() {

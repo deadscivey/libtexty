@@ -96,6 +96,7 @@ set(LIBS
 
 set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Language.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/cleaning/basic.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hashing/hash_funcs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/misc.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/util/ScopeGuard.cpp

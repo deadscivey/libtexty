@@ -38,7 +38,7 @@ class Node {
   bool getAttr(const std::string &attrName, std::string& result) const;
   std::string getAttr(const std::string &attrName) const;
 
-  void getText(std::ostringstream &oss) const;
+  size_t getText(std::ostringstream &oss) const;
   std::string getText() const;
 
   class NodeVector {
