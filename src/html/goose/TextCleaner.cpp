@@ -3,7 +3,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <glog/logging.h>
 #include "html/goose/TextCleaner.h"
 #include "html/Node.h"
 

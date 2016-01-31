@@ -1,5 +1,4 @@
 #include <gumbo.h>
-#include <glog/logging.h>
 #include "html/GumboVectorWrapper.h"
 #include "html/Node.h"
 #include "util/misc.h"
@@ -62,7 +61,6 @@ bool Node::isElement() const {
   if (!good()) {
     return false;
   }
-  uintptr_t nodePtr = (uintptr_t) node_;
   return node_->type == GUMBO_NODE_ELEMENT;
 }
 

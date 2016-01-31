@@ -1,4 +1,3 @@
-#include <glog/logging.h>
 #include "html/goose/util.h"
 #include "string_views/TokenView.h"
 using namespace std;

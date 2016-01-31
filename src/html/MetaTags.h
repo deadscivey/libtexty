@@ -17,6 +17,9 @@ class MetaTags {
   static MetaTags extract(const Node& startingNode);
   const std::string& getPublishDate() const;
   const std::string& getTitle() const;
+  bool has(const std::string&) const;
+  const std::string& get(const std::string&) const;
+  size_t size() const;
 };
 
 

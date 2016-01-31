@@ -73,4 +73,20 @@ const string& MetaTags::getTitle() const {
   return getFirstOrNothing(titleTags);
 }
 
+bool MetaTags::has(const string &key) const {
+  return tagValues_.count(key) > 0;
+}
+
+const string& MetaTags::get(const string &key) const {
+  auto found = tagValues_.find(key);
+  if (found != tagValues_.end()) {
+    return found->second;
+  }
+  return nothing;
+}
+
+size_t MetaTags::size() const {
+  return tagValues_.size();
+}
+
 }} // text::html

@@ -3,7 +3,6 @@
 #include <map>
 #include <array>
 #include <utf8/unchecked.h>
-#include <glog/logging.h>
 using namespace std;
 
 static const map<uint32_t, uint32_t> singleUnicodeReplacements {
@@ -42,7 +41,6 @@ string basicClean(const string &text) {
   }
   for (auto elem: view) {
     auto cp = elem.second;
-    LOG(INFO) << cp;
     if (cp == 160 || (cp > 8000 && cp < 12000)) {
       auto replacement = singleUnicodeReplacements.find(cp);
       if (replacement != singleUnicodeReplacements.end()) {
