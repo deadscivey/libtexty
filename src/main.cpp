@@ -14,6 +14,7 @@
 #include <set>
 #include <vector>
 #include <iostream>
+#include <eigen3/Eigen/Dense>
 
 #include "stemming/StemmerManager.h"
 #include "stemming/ThreadSafeStemmerManager.h"
@@ -30,7 +31,7 @@
 #include "randomness/RandomDistribution.h"
 #include "Language.h"
 #include "hashing/BloomFilter.h"
-
+#include "corpus/Vocabulary.h"
 #include "util/misc.h"
 
 using texty::hashing::SimHasher;
@@ -59,33 +60,44 @@ using texty::randomness::RandomDistribution;
 using texty::language_detection::LanguageProfiles;
 using texty::stemming::ThreadSafeStemmerManager;
 using texty::html::goose::GooseContentExtractor;
+using texty::corpus::Vocabulary;
+
+class TempDoc {
+ public:
+  using map_type = map<string, size_t>;
+  using value_type = typename map_type::value_type;
+  using iterator = typename map_type::iterator;
+  using const_iterator = typename map_type::const_iterator;
+
+  using term_type = string;
+  using init_list = std::initializer_list<value_type>;
+ protected:
+  map_type terms_;
+ public:
+  TempDoc(init_list init)
+    : terms_(init){}
+  const_iterator begin() const {
+    return terms_.begin();
+  }
+  const_iterator end() const {
+    return terms_.end();
+  }
+};
+
+using vocab_type = Vocabulary<TempDoc, string>;
+
 int main() {
   google::InstallFailureSignalHandler();
-  GooseContentExtractor extractor;
-  string data;
-  CHECK(folly::readFile("text/html/jezebel1.txt", data));
-  auto result = extractor.extract(data, texty::Language::EN);
-  LOG(INFO) << result;
-  LOG(INFO) << result.size();
-  cout << endl << endl;
-  LOG(INFO) << "CLEANED";
-  auto cleaned = texty::cleaning::basicClean(result);
-  LOG(INFO) << cleaned;
+  vocab_type vocab {
+    {"dog", {0, 5}},
+    {"cat", {1, 3}},
+    {"fish", {2, 10}}
+  };
+  TempDoc doc {
+    {"dog", 2},
+    {"fish", 1},
+    {"trolls", 16}
+  };
+  auto vec = vocab.vectorizeDenseFloatTfidf(doc);
+  LOG(INFO) << vec;
 }
-
-// int main() {
-//   auto docs = loadData();
-//   auto keys = texty::util::keyVec(docs);
-//   auto data = docs[keys[0]];
-//   LOG(INFO) << data;
-//   auto sampler = NGramSampler<RandomDistribution<uniform_int_distribution, size_t>>::create(data);
-//   for (size_t i = 0; i < 10; i++) {
-//     prettyLog(sampler.get<1>());
-//   }
-//   for (size_t i = 0; i < 10; i++) {
-//     prettyLog(sampler.get<2>());
-//   }
-//   for (size_t i = 0; i < 10; i++) {
-//     prettyLog(sampler.get<3>());
-//   }
-// }
