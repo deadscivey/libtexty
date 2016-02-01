@@ -58,7 +58,7 @@ std::string basic_utf8_clean(std::string text) {
 }
 
 std::string goose_content_extract_with_language_impl(
-    std::string htmlStr, Langue lang) {
+    std::string htmlStr, Language lang) {
   html::goose::GooseContentExtractor extractor;
   auto extracted = extractor.extract(htmlStr, lang);
   return basic_utf8_clean(extracted);
