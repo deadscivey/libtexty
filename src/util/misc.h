@@ -93,4 +93,10 @@ const T1& largestKey(const std::set<T1> &aSet) {
   return *aSet.rbegin();
 }
 
+template<typename T1>
+const T1& smallestKey(const std::set<T1> &aSet) {
+  DEBUG_CHECK(aSet.size() > 0);
+  return *aSet.begin();
+}
+
 }} // texty::util

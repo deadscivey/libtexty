@@ -99,6 +99,10 @@ class ConstByteStringIterator: std::iterator<std::random_access_iterator_tag, TI
     return idx_ != other.idx_;
   }
 
+  bool operator==(const ConstByteStringIterator &other) const {
+    return idx_ == other.idx_;
+  }
+
   bool operator<(const ConstByteStringIterator &other) const {
     return idx_ < other.idx_;
   }

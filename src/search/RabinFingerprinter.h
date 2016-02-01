@@ -15,6 +15,7 @@ uint64_t rabinFingerprint(uint32_t alpha, uint64_t modN, size_t count,
   for (TIter it = start; it != end; ++it) {
     auto codePoint = (uint32_t) *it;
     uint64_t powVal = std::pow(alpha, expo);
+    powVal %= modN;
     powVal *= codePoint;
     powVal %= modN;
     acc = (acc + powVal) % modN;

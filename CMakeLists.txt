@@ -104,7 +104,6 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/UnicodeBlock.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/unicode/support.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/search/RabinFingerprinter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/search/Utf8RabinSearcher.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/Utf8Stemmer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/SbStemmerWrapper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stemming/StemmerManager.cpp
@@ -164,7 +163,8 @@ add_executable(unit_test_runner
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/test/unit/test_MetaTags.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/test/unit/test_LanguageProfiles.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/search/test/unit/test_RabinFingerprinter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/search/test/unit/test_Utf8RabinSearcher.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/search/test/unit/test_SingleLengthRollingRabinHash.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/search/test/unit/test_RollingRabinHash.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_Utf8IndexView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_TokenView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_ShingleView2.cpp

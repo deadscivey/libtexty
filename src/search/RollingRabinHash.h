@@ -24,11 +24,15 @@ class RollingRabinHash {
   string_iter currentIt_;
   string_iter endIt_;
   size_t currentOffset_ {0};
-  codepoint_queue cpQueue_;
 
+  // number of places we've gone beyond end iterator,
+  // to finish fingerprinting shortest term lengths
+  size_t overFlowOffset_ {0};
+  codepoint_queue cpQueue_;
+  size_t maxTerm_ {0};
+  size_t minTerm_ {0};
   void initialize() {
-    size_t maxTerm = util::largestKey(currentHashes_);
-    while (currentOffset_ < maxTerm && currentIt_ != endIt_) {
+    while (currentOffset_ < maxTerm_ && currentIt_ != endIt_) {
       auto cp = (uint32_t) *currentIt_;
       cpQueue_.push(cp);
       ++currentIt_;
@@ -60,7 +64,9 @@ class RollingRabinHash {
       target_(target),
       currentIt_(target.begin()),
       endIt_(target.end()),
-      cpQueue_(util::largestKey(sizes), 0) {
+      cpQueue_(util::largestKey(sizes), 0),
+      maxTerm_(util::largestKey(sizes)),
+      minTerm_(util::smallestKey(sizes)) {
     for (auto idx: sizes) {
       currentHashes_.insert(std::make_pair(idx, 0));
     }
@@ -72,7 +78,7 @@ class RollingRabinHash {
   }
 
   bool atEnd() const {
-    return currentIt_ == endIt_;
+    return currentIt_ == endIt_ && overFlowOffset_ == (maxTerm_ - minTerm_);
   }
 
   bool good() const {
@@ -88,7 +94,7 @@ class RollingRabinHash {
     if (found == currentHashes_.end()) {
       return 0;
     }
-    return found.second;
+    return found->second;
   }
 
   void reset() {
@@ -96,6 +102,7 @@ class RollingRabinHash {
       item.second = 0;
     }
     currentOffset_ = 0;
+    overFlowOffset_ = 0;
     currentIt_ = target_.begin();
     initialize();
   }
@@ -108,33 +115,66 @@ class RollingRabinHash {
     return modN_;
   }
 
+ protected:
+  bool preOverflowStep() {
+    uint32_t front = cpQueue_.at(0);
+    for (auto &elem: currentHashes_) {
+      uint64_t maxPow = std::pow(alpha_, elem.first - 1);
+      maxPow %= modN_;
+      maxPow *= front;
+      maxPow %= modN_;
+      elem.second -= maxPow;
+      elem.second *= alpha_;
+      elem.second %= modN_;
+    }
+    auto nextCp = (uint32_t) *currentIt_;
+    for (auto &elem: currentHashes_) {
+      if (elem.first == maxTerm_) {
+        elem.second += nextCp;
+      } else {
+        elem.second += cpQueue_.at(elem.first);
+      }
+      elem.second %= modN_;
+    }
+    cpQueue_.push(nextCp);
+    ++currentOffset_;
+    ++currentIt_;
+    return true;
+  }
+
+  bool postOverflowStep() {
+    uint32_t front = cpQueue_.at(0);
+    for (auto &elem: currentHashes_) {
+      if (overFlowOffset_ >= (maxTerm_ - elem.first)) {
+        elem.second = 0;
+      } else {
+        uint64_t maxPow = std::pow(alpha_, elem.first - 1);
+        maxPow %= modN_;
+        maxPow *= front;
+        maxPow %= modN_;
+        elem.second -= maxPow;
+        elem.second %= modN_;
+        elem.second *= alpha_;
+        elem.second %= modN_;        
+
+        auto nextCp = cpQueue_.at(elem.first);
+        elem.second += nextCp;
+        elem.second %= modN_;
+      }
+    }
+    overFlowOffset_++;
+    cpQueue_.push(0);
+    return true;
+  }
+ public:
   bool step() {
     if (atEnd()) {
       return false;
     }
-    for (auto &elem: currentHashes_) {
-      uint32_t front = cpQueue_.at(0);
-      uint64_t maxPow = std::pow(front, elem.first - 1);
-      maxPow %= modN_;
-      uint64_t current = elem.second;
-      current -= maxPow;
-      current %= modN_;
-      current *= alpha_;
-      current %= modN_;
-      elem.second = current;
+    if (currentIt_ == endIt_) {
+      return postOverflowStep();
     }
-    auto cp = (uint32_t) *currentIt_;
-    ++currentOffset_;
-    ++currentIt_;
-    for (auto &elem: currentHashes_) {
-      auto newPoint = cpQueue_.at(elem.first);
-      uint64_t current = elem.second;
-      current += newPoint;
-      current %= modN_;
-      elem.second = current;
-    }
-    cpQueue_.push(cp);
-    return true;
+    return preOverflowStep();
   }
 };
 
