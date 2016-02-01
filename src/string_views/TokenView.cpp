@@ -1,4 +1,4 @@
-#include "string_views/Utf8View.h"
+#include "string_views/Utf8IndexView.h"
 #include "string_views/TokenView.h"
 #include "util/misc.h"
 #include "unicode/support.h"
@@ -10,7 +10,7 @@ namespace texty { namespace string_views {
 
 TokenView::TokenView(const string &text): utf8View_(text){}
 
-TokenView::Iterator::Iterator(Utf8Iterator start, Utf8Iterator end)
+TokenView::Iterator::Iterator(Utf8IndexIterator start, Utf8IndexIterator end)
   : start_(start), end_(end) {}
 
 bool TokenView::Iterator::operator==(const Iterator &other) const {
@@ -37,7 +37,7 @@ std::pair<size_t, size_t> TokenView::Iterator::operator*() {
 }
 
 TokenView::Iterator& TokenView::Iterator::operator++() {
-  Utf8Iterator nextStart = end_;
+  Utf8IndexIterator nextStart = end_;
   if (!nextStart) {
     start_ = end_;
     return *this;
@@ -51,7 +51,7 @@ TokenView::Iterator& TokenView::Iterator::operator++() {
     break;
   }
   start_ = nextStart;
-  Utf8Iterator nextEnd = start_;
+  Utf8IndexIterator nextEnd = start_;
   if (!nextEnd.good()) {
     end_ = nextEnd;
     return *this;
@@ -81,8 +81,8 @@ TokenView::Iterator TokenView::Iterator::operator++(int) {
 }
 
 TokenView::Iterator TokenView::begin() {
-  Utf8Iterator startIter = utf8View_.begin();
-  Utf8Iterator firstEnd = startIter;
+  Utf8IndexIterator startIter = utf8View_.begin();
+  Utf8IndexIterator firstEnd = startIter;
   while (firstEnd.good()) {
     auto current = *firstEnd;
     if (!unicode::isLetterPoint(current.second)) {

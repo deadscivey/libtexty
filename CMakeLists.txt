@@ -116,8 +116,8 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/russian_stopwords.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stopwords/spanish_stopwords.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/ByteStringWindow.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/NakedUtf8Iterator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8Iterator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/Utf8IndexIterator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessNGramView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/RandomAccessUtf8View.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/TokenView.cpp
@@ -158,7 +158,7 @@ set(GTEST_LIB
 )
 
 add_executable(unit_test_runner
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_Utf8View.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_Utf8IndexView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_TokenView.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_ShingleView2.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/string_views/test/unit/test_RandomAccessUtf8View.cpp

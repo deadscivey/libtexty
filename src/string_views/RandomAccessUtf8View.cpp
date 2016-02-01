@@ -1,6 +1,5 @@
 #include "string_views/RandomAccessUtf8View.h"
-#include "string_views/Utf8View.h"
-#include "string_views/Utf8Iterator.h"
+#include "string_views/Utf8IndexView.h"
 #include <utf8/unchecked.h>
 #include <string>
 
@@ -20,7 +19,7 @@ RandomAccessUtf8View::RandomAccessUtf8View(RandomAccessUtf8View &&other)
 RandomAccessUtf8View RandomAccessUtf8View::create(const string &text) {
   vector<size_t> offsets;
   offsets.reserve(text.size());
-  Utf8View view(text);
+  Utf8IndexView view(text);
   for (auto cpPair: view) {
     offsets.push_back(cpPair.first);
   }
@@ -52,13 +51,15 @@ size_t RandomAccessUtf8View::bytes() const {
   return offsets_.back();
 }
 
-Utf8Iterator RandomAccessUtf8View::begin() {
-  return Utf8Iterator(text_.data(), text_.data() + text_.size() - 1);
+RandomAccessUtf8View::iterator RandomAccessUtf8View::begin() {
+  return RandomAccessUtf8View::iterator(
+    text_.data(), text_.data() + text_.size() - 1
+  );
 }
 
-Utf8Iterator RandomAccessUtf8View::end() {
+RandomAccessUtf8View::iterator RandomAccessUtf8View::end() {
   auto endPtr = text_.data() + text_.size() - 1;
-  return Utf8Iterator(endPtr, endPtr);
+  return RandomAccessUtf8View::iterator(endPtr, endPtr);
 }
 
 }} // texty::string_views

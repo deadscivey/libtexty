@@ -39,8 +39,7 @@ string basicClean(const string &text) {
   for (size_t i = 0; i < 2; i++) {
     prevPoints[i] = 0;
   }
-  for (auto elem: view) {
-    auto cp = elem.second;
+  for (auto cp: view) {
     if (cp == 160 || (cp > 8000 && cp < 12000)) {
       auto replacement = singleUnicodeReplacements.find(cp);
       if (replacement != singleUnicodeReplacements.end()) {

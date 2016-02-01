@@ -68,7 +68,7 @@ TEST(TestByteStringWindow, TestUtf8Window) {
   }
   vector<uint32_t> actual;
   ByteStringWindow window(text, 5, text.find(", or is it?"));
-  for (auto c: window.asNakedUtf8()) {
+  for (auto c: window.asUtf8View()) {
     actual.push_back(c);
   }
   EXPECT_EQ(expectedPoints, actual);

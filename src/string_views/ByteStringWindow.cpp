@@ -52,12 +52,12 @@ ByteStringWindow::value_type ByteStringWindow::operator[](size_t idx) const {
   return at(idx);
 }
 
-Utf8View ByteStringWindow::asUtf8() const {
+Utf8View ByteStringWindow::asUtf8View() const {
   return Utf8View(start_, end_);
 }
 
-NakedUtf8View ByteStringWindow::asNakedUtf8() const {
-  return NakedUtf8View(start_, end_);
+Utf8IndexView ByteStringWindow::asUtf8IndexView() const {
+  return Utf8IndexView(start_, end_);
 }
 
 }} // texty::string_views

@@ -2,21 +2,21 @@
 #include <vector>
 #include <string>
 
-#include "string_views/Utf8Iterator.h"
-#include "string_views/Utf8View.h"
+#include "string_views/Utf8IndexIterator.h"
+#include "string_views/Utf8IndexView.h"
 
 using namespace std;
-using texty::string_views::Utf8Iterator;
-using texty::string_views::Utf8View;
+using texty::string_views::Utf8IndexIterator;
+using texty::string_views::Utf8IndexView;
 
-TEST(TestUtf8View, SimpleAscii) {
+TEST(TestUtf8IndexView, SimpleAscii) {
   string text = "cat-related text";
   vector<pair<size_t, uint32_t>> expected;
   expected.reserve(text.size());
   for (size_t i = 0; i < text.size(); i++) {
     expected.push_back(make_pair(i, (uint32_t) text[i]));
   }
-  Utf8View view(text);
+  Utf8IndexView view(text);
   vector<pair<size_t, uint32_t>> actual;
   actual.reserve(text.size());
   for (auto cpPair: view) {
@@ -25,7 +25,7 @@ TEST(TestUtf8View, SimpleAscii) {
   EXPECT_EQ(expected, actual);
 }
 
-TEST(TestUtf8View, SomeUnicode) {
+TEST(TestUtf8IndexView, SomeUnicode) {
   string text = "cat\u2014related text";
   vector<pair<size_t, uint32_t>> expected {
     {0, 99}, {1, 97}, {2, 116}, {3, 8212},
@@ -33,7 +33,7 @@ TEST(TestUtf8View, SomeUnicode) {
     {10, 116}, {11, 101}, {12, 100}, {13, 32},
     {14, 116}, {15, 101}, {16, 120}, {17, 116}
   };
-  Utf8View view(text);
+  Utf8IndexView view(text);
   vector<pair<size_t, uint32_t>> actual;
   actual.reserve(text.size());
   for (auto cpPair: view) {

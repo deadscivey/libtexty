@@ -2,7 +2,7 @@
 #include <string>
 #include "string_views/ConstByteStringIterator.h"
 #include "string_views/Utf8View.h"
-#include "string_views/NakedUtf8View.h"
+#include "string_views/Utf8IndexView.h"
 
 
 namespace texty { namespace string_views {
@@ -27,8 +27,8 @@ class ByteStringWindow {
   iterator cend() const;
   value_type at(size_type idx) const;
   value_type operator[](size_type idx) const;
-  Utf8View asUtf8() const;
-  NakedUtf8View asNakedUtf8() const;
+  Utf8View asUtf8View() const;
+  Utf8IndexView asUtf8IndexView() const;
 };
 
 }} // texty::string_views

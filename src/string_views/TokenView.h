@@ -1,21 +1,21 @@
 #pragma once
-#include "string_views/Utf8View.h"
-#include "string_views/Utf8Iterator.h"
+#include "string_views/Utf8IndexView.h"
+#include "string_views/Utf8IndexIterator.h"
 
 #include <string>
 
 namespace texty { namespace string_views {
 
 class TokenView {
-  Utf8View utf8View_;
+  Utf8IndexView utf8View_;
  public:
   TokenView(const std::string &text);
   class Iterator {
    protected:
-    Utf8Iterator start_;
-    Utf8Iterator end_;
+    Utf8IndexIterator start_;
+    Utf8IndexIterator end_;
    public:
-    Iterator(Utf8Iterator start, Utf8Iterator end);
+    Iterator(Utf8IndexIterator start, Utf8IndexIterator end);
     bool operator==(const Iterator &other) const;
     bool operator!=(const Iterator &other) const;
     bool good();

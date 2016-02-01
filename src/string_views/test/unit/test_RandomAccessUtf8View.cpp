@@ -3,8 +3,6 @@
 #include <string>
 #include <map>
 
-#include "string_views/Utf8Iterator.h"
-#include "string_views/Utf8View.h"
 #include "string_views/RandomAccessUtf8View.h"
 
 using namespace std;
