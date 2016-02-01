@@ -16,7 +16,8 @@ class RollingQueue {
   size_t back_ {0};
  public:
   RollingQueue(size_t capacity, T defaultVal)
-    : capacity_(capacity), defaultVal_(defaultVal){
+    : capacity_(capacity), defaultVal_(defaultVal) {
+    DEBUG_CHECK(capacity > 0);
     underlying_.insert(underlying_.begin(), defaultVal, capacity+1);
     back_ = capacity;
   }

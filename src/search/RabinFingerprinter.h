@@ -5,7 +5,7 @@
 namespace texty { namespace search {
 
 template<typename TIter>
-uint64_t rabinFingerprint(uint32_t alpha, size_t count,
+uint64_t rabinFingerprint(uint32_t alpha, uint64_t modN, size_t count,
     TIter start, TIter end) {
   if (count == 0) {
     return 0;
@@ -14,7 +14,10 @@ uint64_t rabinFingerprint(uint32_t alpha, size_t count,
   uint64_t acc = 0;
   for (TIter it = start; it != end; ++it) {
     auto codePoint = (uint32_t) *it;
-    acc += codePoint * std::pow(alpha, expo);
+    uint64_t powVal = std::pow(alpha, expo);
+    powVal *= codePoint;
+    powVal %= modN;
+    acc = (acc + powVal) % modN;
     if (expo == 0) {
       break;
     }
@@ -26,15 +29,17 @@ uint64_t rabinFingerprint(uint32_t alpha, size_t count,
 class RabinFingerprinter {
  protected:
   uint32_t alpha_ {0};
+  uint64_t modN_ {0};
  public:
-  RabinFingerprinter(uint32_t alpha);
+  RabinFingerprinter(uint32_t alpha, uint64_t modN);
   uint32_t alpha() const;
+  uint32_t modN() const;
   uint64_t hash(const char*, const char*) const;
   uint64_t hash(const char*, size_t) const;
 
   template<typename TIter>
   uint64_t hash(size_t count, TIter start, TIter end) const {
-    return rabinFingerprint(alpha_, count, start, end);
+    return rabinFingerprint(alpha_, modN_, count, start, end);
   }
 
   template<typename TCollection>

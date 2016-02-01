@@ -8,21 +8,21 @@ using namespace texty::search;
 using namespace texty::string_views;
 
 TEST(TestRabinFingerprinter, BasicString) {
-  RabinFingerprinter finger(101);
+  RabinFingerprinter finger(101, 5120000);
   string something = "fish";
   auto hashed = finger.hash(something);
   EXPECT_EQ(106173526, hashed);
 }
 
 TEST(TestRabinFingerprinter, BasicStringOffsets) {
-  RabinFingerprinter finger(101);
+  RabinFingerprinter finger(101, 5120000);
   string something = " fish ";
   auto hashed = finger.hash(something, 1, 5);
   EXPECT_EQ(106173526, hashed);
 }
 
 TEST(TestRabinFingerprinter, CharPointers) {
-  RabinFingerprinter finger(101);
+  RabinFingerprinter finger(101, 5120000);
   string something = " fish ";
   auto hashed = finger.hash(
     something.data() + 1,
@@ -32,7 +32,7 @@ TEST(TestRabinFingerprinter, CharPointers) {
 }
 
 TEST(TestRabinFingerprinter, TestByteStringWindow) {
-  RabinFingerprinter finger(101);
+  RabinFingerprinter finger(101, 5120000);
   string something = "bad fish yes";
   ByteStringWindow window(something,
     something.find("fish"),

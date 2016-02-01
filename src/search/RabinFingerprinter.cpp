@@ -5,8 +5,8 @@ namespace texty { namespace search {
 
 using string_views::ByteStringWindow;
 
-RabinFingerprinter::RabinFingerprinter(uint32_t alpha)
-  : alpha_(alpha){}
+RabinFingerprinter::RabinFingerprinter(uint32_t alpha, uint64_t modN)
+  : alpha_(alpha), modN_(modN) {}
 
 uint32_t RabinFingerprinter::alpha() const {
   return alpha_;

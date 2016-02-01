@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <functional>
+#include "util/macros.h"
 
 namespace texty { namespace util {
 
@@ -80,5 +81,16 @@ bool always(const T &) {
   return true;
 }
 
+template<typename T1, typename T2>
+const T1& largestKey(const std::map<T1, T2> &aMap) {
+  DEBUG_CHECK(aMap.size() > 0);
+  return aMap.rbegin()->first;
+}
+
+template<typename T1>
+const T1& largestKey(const std::set<T1> &aSet) {
+  DEBUG_CHECK(aSet.size() > 0);
+  return *aSet.rbegin();
+}
 
 }} // texty::util

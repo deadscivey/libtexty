@@ -15,10 +15,11 @@ using namespace texty::string_views;
 TEST(TestUtf8RabinSearcher, Basic) {
   map<size_t, unordered_map<uint64_t, Utf8View>> hashes;
   vector<string> toFind {
-    "fish", "fishes", "fishe", "dog"
+    "fis", "dog", "are"
   };
   const uint32_t ALPHA = 101;
-  RabinFingerprinter finger(ALPHA);
+  const uint64_t MOD_N = 5120000;
+  RabinFingerprinter finger(ALPHA, MOD_N);
   for (auto &item: toFind) {
     auto hashed = finger.hash(item);
     LOG(INFO) << "\t[ " << item.size() << " ]  :  " << hashed;
@@ -34,7 +35,7 @@ TEST(TestUtf8RabinSearcher, Basic) {
     ));
   }
   Utf8RabinSearcher searcher(ALPHA, hashes);
-  string toSearch = "fishes are bad";
+  string toSearch = "fishes are extremely fish, are very very very bad";
   {
     ByteStringWindow window(toSearch);
     ostringstream oss;
@@ -43,8 +44,8 @@ TEST(TestUtf8RabinSearcher, Basic) {
     }
     LOG(INFO) << oss.str();
   }
-  auto found = searcher.findAll(toSearch);
-
+  ByteStringWindow window(toSearch);
+  auto found = searcher.findAll(window.asUtf8View());
   for (auto &item: found) {
     ostringstream oss;
     oss << "{ ";
