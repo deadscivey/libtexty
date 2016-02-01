@@ -53,7 +53,7 @@ class ConstByteStringIterator: std::iterator<std::random_access_iterator_tag, TI
 
  public:
   ConstByteStringIterator& operator++() {
-    if ((idx_ + 1) <= rangeSize()) {
+    if (idx_ <= rangeSize()) {
       idx_++;
     }
     return *this;
@@ -78,17 +78,16 @@ class ConstByteStringIterator: std::iterator<std::random_access_iterator_tag, TI
   }
 
   ConstByteStringIterator& operator+=(int x) {
-    auto rangeSz = rangeSize();
-    if ((idx_ + x) <= rangeSz) {
+    auto rangeLimit = rangeSize() + 1;
+    if ((idx_ + x) <= rangeLimit) {
       idx_ += x;
     } else {
-      idx_ = rangeSz;
+      idx_ = rangeLimit;
     }
     return *this;
   }
 
   ConstByteStringIterator& operator-=(int x) {
-    auto rangeSz = rangeSize();
     if (idx_ < x) {
       x = idx_;
     }

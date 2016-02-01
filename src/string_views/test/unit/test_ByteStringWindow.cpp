@@ -17,6 +17,29 @@ TEST(TestByteStringWindow, EntireString) {
   EXPECT_EQ(expected, actual);
 }
 
+TEST(TestByteStringWindow, EntireStringFromPointers) {
+  string text = "this is a test";
+  string expected = "this is a test";
+  string actual = "";
+  ByteStringWindow window(text.data(), text.data() + text.size());
+  for (auto c: window) {
+    actual += c;
+  }
+  EXPECT_EQ(expected, actual);
+}
+
+TEST(TestByteStringWindow, EntireStringFromPointerAndSize) {
+  string text = "this is a test";
+  string expected = "this is a test";
+  string actual = "";
+  ByteStringWindow window(text.data(), text.size());
+  for (auto c: window) {
+    actual += c;
+  }
+  EXPECT_EQ(expected, actual);
+}
+
+
 TEST(TestByteStringWindow, HalfString1) {
   string text = "this is a test";
   string expected = "this is";
