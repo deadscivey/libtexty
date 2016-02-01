@@ -53,8 +53,18 @@ class RollingQueue {
   }
  public:
   T& at(size_t idx) {
-    DEBUG_CHECK(idx < capacity_);
+    DEBUG_CHECK(idx <= capacity_);
     return underlying_[getEffectiveIndex(idx)];
+  }
+  T& operator[](size_t idx) {
+    return at(idx);
+  }
+  const T& at(size_t idx) const {
+    DEBUG_CHECK(idx <= capacity_);
+    return underlying_[getEffectiveIndex(idx)];
+  }
+  const T& operator[](size_t idx) const {
+    return at(idx);
   }
 };
 

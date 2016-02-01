@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <string>
 #include <type_traits>
-#include <glog/logging.h>
 namespace texty { namespace search {
 
 template<typename TIter>
@@ -15,7 +14,7 @@ uint64_t rabinFingerprint(uint32_t alpha, size_t count,
   uint64_t acc = 0;
   for (TIter it = start; it != end; ++it) {
     auto codePoint = (uint32_t) *it;
-    acc += std::pow(codePoint, expo);
+    acc += codePoint * std::pow(alpha, expo);
     if (expo == 0) {
       break;
     }
