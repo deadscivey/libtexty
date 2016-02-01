@@ -8,7 +8,7 @@ using namespace std;
 
 namespace texty { namespace string_views {
 
-TokenView::TokenView(const string &text): text_(text), utf8View_(text){}
+TokenView::TokenView(const string &text): utf8View_(text){}
 
 TokenView::Iterator::Iterator(Utf8Iterator start, Utf8Iterator end)
   : start_(start), end_(end) {}

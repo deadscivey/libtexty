@@ -2,19 +2,18 @@
 
 #include <string>
 #include "string_views/Utf8Iterator.h"
+#include "string_views/BaseUtf8View.h"
 
 namespace texty { namespace string_views {
 
-class Utf8View {
-  const char *textStart_ {nullptr};
-  const char *textEnd_ {nullptr};
-public:
-  size_t bytes();
-  Utf8View(const std::string &text);
-  Utf8View(const char *text, size_t len);
-  Utf8View(const char *textStart, const char *textEnd);
-  Utf8Iterator begin();
-  Utf8Iterator end();
+class Utf8View: public BaseUtf8View<Utf8View, Utf8Iterator> {
+ public:
+  using iterator = Utf8Iterator;
+  using parent_type = BaseUtf8View<Utf8View, Utf8Iterator>;
+
+  template<typename ...Args>
+  Utf8View(Args... args)
+    : parent_type(std::forward<Args>(args)...) {}  
 };
 
 }} // texty::string_views

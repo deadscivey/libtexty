@@ -7,7 +7,6 @@
 namespace texty { namespace string_views {
 
 class TokenView {
-  const std::string &text_;
   Utf8View utf8View_;
  public:
   TokenView(const std::string &text);

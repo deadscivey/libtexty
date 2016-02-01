@@ -22,7 +22,6 @@ size_t StupidStopwordCounter::countStopwords(const string &text) {
   size_t count = 0;
   for (auto toke: view) {
     const char *tokenStart = beginning + toke.first;
-    const char *tokenEnd = beginning + toke.second;
     if (toke.second <= toke.first) {
       break;
     }

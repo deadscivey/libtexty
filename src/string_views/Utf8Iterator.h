@@ -1,25 +1,20 @@
 #pragma once
 
 #include <string>
+#include "string_views/BaseUtf8Iterator.h"
 
 namespace texty { namespace string_views {
 
-class Utf8Iterator {
+class Utf8Iterator : public BaseUtf8Iterator<Utf8Iterator,
+    std::pair<size_t, uint32_t>>  {
  protected:
-  const char *position_;
-  const char *endPos_;
-  size_t distanceFromStart_ {0};
+  using deref_result = std::pair<size_t, uint32_t>;
  public:
-  Utf8Iterator(const char *pos, const char *endPos);
-  Utf8Iterator(const char *pos, const char *endPos, size_t dist);
-  std::pair<size_t, uint32_t> operator*();
-  Utf8Iterator& operator=(const Utf8Iterator &other);
-  Utf8Iterator& operator++();
-  Utf8Iterator operator++(int);
-  bool operator==(const Utf8Iterator &other) const;
-  bool operator!=(const Utf8Iterator &other) const;
-  bool good();
-  operator bool();
+  using parent_type = BaseUtf8Iterator<Utf8Iterator, deref_result>;
+  deref_result dereference() const;
+  template<typename ...Args>
+  Utf8Iterator(Args... args)
+    : parent_type(std::forward<Args>(args)...) {}  
 };
 
 }} // texty::string_views
