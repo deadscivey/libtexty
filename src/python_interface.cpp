@@ -8,9 +8,10 @@
 #include "Language.h"
 #include "language_detection/GlobalLanguageDetector.h"
 #include "language_detection/GlobalLanguageProfiles.h"
+#include "html/goose/GooseContentExtractor.h"
+#include "cleaning/basic.h"
 
 using namespace std;
-
 namespace texty { namespace python_interface {
 
 uint64_t simhash(const std::string &text, uint64_t seed) {
@@ -52,6 +53,31 @@ std::string detect_language(std::string text) {
   return stringOfLanguage(lang);
 }
 
+std::string basic_utf8_clean(std::string text) {
+  return cleaning::basicClean(text);
+}
+
+std::string goose_content_extract_with_language_impl(
+    std::string htmlStr, Langue lang) {
+  html::goose::GooseContentExtractor extractor;
+  auto extracted = extractor.extract(htmlStr, lang);
+  return basic_utf8_clean(extracted);
+}
+
+std::string goose_content_extract_with_language(
+    std::string htmlStr, std::string langCode) {
+  auto lang = languageFromCode(langCode);
+  return goose_content_extract_with_language_impl(
+    htmlStr, lang
+  );
+}
+
+std::string goose_content_extract_en(std::string htmlStr) {
+  return goose_content_extract_with_language_impl(
+    htmlStr, Language::EN
+  );
+}
+
 }} // texty::python_interface
 
 
@@ -76,5 +102,16 @@ PYBIND11_PLUGIN(textypy_libtexty) {
     m.def("detect_language",
         &texty::python_interface::detect_language,
         "Detect most likely language of UTF-8 or ASCII text.");
+    m.def("basic_utf8_clean",
+        &texty::python_interface::basic_utf8_clean,
+        "Convert common unicode punctuation to ASCII equivalents; strip extra whitespace.");
+  m.def("goose_content_extract_with_language",
+        &texty::python_interface::goose_content_extract_with_language,
+        "Extract HTML content, with assumed language given by second parameter");
+  m.def("goose_content_extract",
+        &texty::python_interface::goose_content_extract_en,
+        "Extract English-language HTML content");
+
+ 
     return m.ptr();
 }
