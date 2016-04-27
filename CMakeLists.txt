@@ -129,6 +129,7 @@ set(BASE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/OwningLanguageDetector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/GlobalLanguageDetector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/language_detection/NonOwningLanguageDetector.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/chardet/generated/jisfreq.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/HtmlDom.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/Node.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/html/Tag.cpp
